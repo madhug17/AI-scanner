@@ -1,10 +1,6 @@
-
 from pathlib import Path
 from typing import Protocol
-
 from scanner.core.finding import Finding
-
-
 SKIP_DIRS = {
     ".git",
     ".venv",
