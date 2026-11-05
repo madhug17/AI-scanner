@@ -1,11 +1,13 @@
 from typing import Any
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, BackgroundTasks
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from scanner.database.session import get_db
 from scanner.services.scan_service import ScanService
 from scanner.api.dependencies import rate_limit_dependency
+from scanner.workers.scan_worker import ScanWorker
+from scanner.messaging.kafka_producer import kafka_producer
 
 router = APIRouter(prefix="/api/v1/scans", tags=["Scans"])
 
@@ -52,12 +54,16 @@ class PaginatedScanHistoryResponse(BaseModel):
 )
 def create_scan(
     request: ScanRequest,
+    background_tasks: BackgroundTasks = None,
     db: Session = Depends(get_db),
 ):
     """Submit a GitHub repository URL for security scanning."""
     service = ScanService(db)
     try:
         job = service.create_scan(request.repository_url)
+        if background_tasks is not None and not kafka_producer.producer:
+            worker = ScanWorker()
+            background_tasks.add_task(worker.process_scan_job, job.id, job.repository_url)
         return ScanCreationResponse(
             scan_id=job.id,
             status=job.status,
