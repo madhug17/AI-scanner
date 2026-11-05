@@ -1,138 +1,134 @@
 from pathlib import Path
-from typing import Protocol
+from pydantic import BaseModel, Field
+
 from scanner.core.finding import Finding
-SKIP_DIRS = {
-    ".git",
-    ".venv",
-    "venv",
-    "node_modules",
-    "__pycache__",
-    ".next",
-    "dist",
-    "build",
-}
-
-MAX_FILE_SIZE = 1_000_000  # 1 MB
-
-SOURCE_EXTENSIONS = {
-    ".py", ".js", ".jsx", ".ts", ".tsx",
-    ".json", ".yaml", ".yml", ".toml",
-    ".env", ".html", ".tf", ".sh",
-}
+from scanner.core.registry import default_registry
+from scanner.core.scoring import ScoringService, RiskSummary
+from scanner.rules.base import SecurityRule
+from scanner.repository.file_discovery import discover_files, DiscoveredFile
+from scanner.analyzers.semgrep import SemgrepAnalyzer
+from scanner.analyzers.gitleaks import GitleaksAnalyzer
+from scanner.analyzers.dependency_audit import DependencyAuditAnalyzer
 
 
-class SecurityRule(Protocol):
-    rule_id: str
-
-    def scan(
-        self,
-        file_path: str,
-        content: str
-    ) -> list[Finding]:
-        ...
+class ScanExecutionResult(BaseModel):
+    findings: list[Finding] = Field(default_factory=list)
+    scanned_files_count: int = 0
+    skipped_files_count: int = 0
+    rules_executed: list[str] = Field(default_factory=list)
+    rules_failed: list[str] = Field(default_factory=list)
+    tool_errors: list[str] = Field(default_factory=list)
+    scan_complete: bool = True
+    summary: RiskSummary | None = None
 
 
 class SecurityEngine:
+    def __init__(
+        self,
+        rules: list[SecurityRule] | None = None,
+        semgrep_analyzer: SemgrepAnalyzer | None = None,
+        gitleaks_analyzer: GitleaksAnalyzer | None = None,
+        dependency_analyzer: DependencyAuditAnalyzer | None = None,
+    ):
+        self.rules = rules if rules is not None else default_registry.get_all_rules()
+        self.semgrep = semgrep_analyzer or SemgrepAnalyzer()
+        self.gitleaks = gitleaks_analyzer or GitleaksAnalyzer()
+        self.dependency_audit = dependency_analyzer or DependencyAuditAnalyzer()
 
-    def __init__(self, rules: list[SecurityRule]):
-        self.rules = rules
+    def scan_repository(
+        self,
+        repo_path: str | Path,
+        run_external_tools: bool = True,
+    ) -> list[Finding]:
+        """Runs scan and returns findings list (backwards-compatible interface)."""
+        result = self.execute_scan(repo_path, run_external_tools=run_external_tools)
+        return result.findings
 
-    def scan_repository(self, repo_path: str) -> list[Finding]:
-
+    def execute_scan(
+        self,
+        repo_path: str | Path,
+        run_external_tools: bool = True,
+    ) -> ScanExecutionResult:
+        """Executes full repository scan across built-in rules and external analyzers.
+        
+        Guarantees that errors or exceptions do not produce a false clean result.
+        """
         root = Path(repo_path).resolve()
-
         if not root.exists():
-            raise FileNotFoundError(
-                f"Repository path does not exist: {root}"
-            )
-
+            raise FileNotFoundError(f"Repository path does not exist: {root}")
         if not root.is_dir():
-            raise NotADirectoryError(
-                f"Expected a directory: {root}"
-            )
+            raise NotADirectoryError(f"Expected a directory: {root}")
 
+        discovered_files, skipped_files = discover_files(root)
         findings: list[Finding] = []
+        rules_executed: set[str] = set()
+        rules_failed: set[str] = set()
+        tool_errors: list[str] = []
 
-        print(f"\n[SCAN] Scanning repository: {root}\n")
-
-        scanned_files = 0
-        skipped_files = 0
-        rule_errors = 0
-
-        for file in root.rglob("*"):
-
-            if not file.is_file():
-                continue
-
-            # Skip unnecessary directories
-            if any(part in SKIP_DIRS for part in file.parts):
-                continue
-
-            # Check supported file extensions
-            if file.suffix.lower() not in SOURCE_EXTENSIONS:
-                continue
-
+        # 1. Run Built-in Rules on Discovered Files
+        for disc_file in discovered_files:
             try:
-                # Skip very large files
-                if file.stat().st_size > MAX_FILE_SIZE:
-                    skipped_files += 1
-                    continue
+                content = disc_file.path.read_text(encoding="utf-8", errors="replace")
+            except OSError as err:
+                skipped_files.append(f"{disc_file.relative_path}: {err}")
+                continue
 
-                # Read file
-                content = file.read_text(
-                    encoding="utf-8",
-                    errors="replace"
-                )
+            for rule in self.rules:
+                try:
+                    rule_findings = rule.scan(disc_file.relative_path, content)
+                    if not isinstance(rule_findings, list):
+                        raise TypeError(f"Rule {rule.rule_id} must return a list")
+                    findings.extend(rule_findings)
+                    rules_executed.add(rule.rule_id)
+                except Exception as err:
+                    rules_failed.add(rule.rule_id)
+                    tool_errors.append(f"Rule {rule.rule_id} error on {disc_file.relative_path}: {err}")
 
-                relative_path = str(file.relative_to(root))
+        # 2. Run External Analyzers if requested
+        if run_external_tools:
+            # Semgrep
+            semgrep_res = self.semgrep.run(root)
+            if semgrep_res.success:
+                findings.extend(semgrep_res.findings)
+            else:
+                if semgrep_res.error_message:
+                    tool_errors.append(semgrep_res.error_message)
 
-                scanned_files += 1
+            # Gitleaks
+            gitleaks_res = self.gitleaks.run(root)
+            if gitleaks_res.success:
+                findings.extend(gitleaks_res.findings)
+            else:
+                if gitleaks_res.error_message:
+                    tool_errors.append(gitleaks_res.error_message)
 
-                # Execute all security rules
-                for rule in self.rules:
+            # Dependency Audit
+            dep_res = self.dependency_audit.run(root)
+            if dep_res.success:
+                findings.extend(dep_res.findings)
+            else:
+                if dep_res.error_message:
+                    tool_errors.append(dep_res.error_message)
 
-                    try:
-                        results = rule.scan(
-                            relative_path,
-                            content
-                        )
+        # 3. Determine scan completeness:
+        # A scan with tool failures or rule exceptions MUST be marked incomplete.
+        scan_complete = len(rules_failed) == 0 and len(tool_errors) == 0
 
-                        # Validate detector output
-                        if results is None:
-                            raise TypeError(
-                                f"Rule {rule.rule_id} returned None"
-                            )
+        # 4. Calculate Risk Scoring
+        summary = ScoringService.calculate_score(
+            findings=findings,
+            rules_executed=sorted(list(rules_executed)),
+            rules_failed=sorted(list(rules_failed)),
+            scan_complete=scan_complete,
+        )
 
-                        if not isinstance(results, list):
-                            raise TypeError(
-                                f"Rule {rule.rule_id} must return a list"
-                            )
-
-                        for finding in results:
-                            if not isinstance(finding, Finding):
-                                raise TypeError(
-                                    f"Rule {rule.rule_id} returned "
-                                    "an invalid finding object"
-                                )
-
-                        findings.extend(results)
-
-                    except Exception as error:
-                        rule_errors += 1
-                        print(
-                            f"[RULE ERROR] {rule.rule_id} | "
-                            f"{relative_path} | {error}"
-                        )
-
-            except (OSError, ValueError) as error:
-                skipped_files += 1
-                print(f"[FILE ERROR] {file}: {error}")
-
-        print("\n========== SCAN SUMMARY ==========")
-        print(f"Files scanned: {scanned_files}")
-        print(f"Files skipped: {skipped_files}")
-        print(f"Security findings: {len(findings)}")
-        print(f"Rule errors: {rule_errors}")
-        print("==================================\n")
-
-        return findings
+        return ScanExecutionResult(
+            findings=findings,
+            scanned_files_count=len(discovered_files),
+            skipped_files_count=len(skipped_files),
+            rules_executed=sorted(list(rules_executed)),
+            rules_failed=sorted(list(rules_failed)),
+            tool_errors=tool_errors,
+            scan_complete=scan_complete,
+            summary=summary,
+        )
