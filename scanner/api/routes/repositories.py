@@ -154,3 +154,4 @@ def get_repository_details(
         updated_at=repo.updated_at,
         recent_scans=recent_scans,
     )
+

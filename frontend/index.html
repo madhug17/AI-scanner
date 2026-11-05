@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI App Security & Quality Scanner — Enterprise Codebase Protection</title>
+  <title>AI App Security & Quality Scanner — Codebase Vulnerability Intelligence</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,13 +13,12 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              dark: '#080c14',
-              surface: '#0f172a',
-              card: '#131c2e',
-              border: '#1e293b',
-              emerald: '#10b981',
-            }
+            canvas: '#0d1117',
+            surface: '#161b22',
+            'surface-hover': '#1f242c',
+            border: '#30363d',
+            'border-muted': '#21262d',
+            subtle: '#8b949e',
           }
         }
       }
@@ -33,46 +32,45 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body class="bg-[#080c14] text-slate-100 min-h-screen flex flex-col selection:bg-emerald-500/30 selection:text-emerald-300">
+<body class="bg-[#0d1117] text-[#c9d1d9] min-h-screen flex flex-col selection:bg-[#21262d] selection:text-[#f0f6fc]">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-auto"></div>
 
   <!-- Top Navigation Header -->
-  <header class="sticky top-0 z-40 bg-[#080c14]/90 backdrop-blur-md border-b border-slate-800/80 px-6 py-3.5 flex items-center justify-between">
+  <header class="sticky top-0 z-40 bg-[#161b22] border-b border-[#30363d] px-6 py-3 flex items-center justify-between">
     <div class="flex items-center gap-8">
       <!-- Product Logo -->
       <a href="javascript:void(0)" onclick="navigateTo('landing-page')" class="flex items-center gap-2.5 group">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:border-emerald-400 transition-all">
-          <i data-lucide="shield-alert" class="w-5 h-5"></i>
+        <div class="w-7 h-7 rounded-md bg-[#21262d] border border-[#30363d] flex items-center justify-center text-[#3fb950] group-hover:border-[#8b949e] transition-colors">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
         </div>
-        <div>
-          <span class="font-extrabold text-sm tracking-tight text-white flex items-center gap-1.5">
-            AI SCANNER <span class="px-1.5 py-0.2 text-[10px] font-mono bg-emerald-950 text-emerald-400 border border-emerald-800/80 rounded">v1.0</span>
-          </span>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm tracking-tight text-[#f0f6fc]">AI SCANNER</span>
+          <span class="px-1.5 py-0.5 text-[10px] font-mono bg-[#21262d] text-[#8b949e] border border-[#30363d] rounded">v1.0</span>
         </div>
       </a>
 
       <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center gap-1 text-xs font-semibold">
-        <button class="nav-link px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors" data-page="landing-page" onclick="navigateTo('landing-page')">Home</button>
-        <button class="nav-link px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors" data-page="dashboard-page" onclick="navigateTo('dashboard-page')">Dashboard</button>
-        <button class="nav-link px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors" data-page="new-scan-page" onclick="navigateTo('new-scan-page')">New Scan</button>
-        <button class="nav-link px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors" data-page="history-page" onclick="navigateTo('history-page')">Scan History</button>
-        <button class="nav-link px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors" data-page="rules-page" onclick="navigateTo('rules-page')">Security Rules</button>
-        <button class="nav-link px-3 py-1.5 rounded-md hover:bg-slate-800/60 transition-colors" data-page="repo-details-page" onclick="navigateTo('repo-details-page')">Repositories</button>
+      <nav class="hidden md:flex items-center gap-1 text-xs font-medium">
+        <button class="nav-link px-3 py-1.5 rounded-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors" data-page="landing-page" onclick="navigateTo('landing-page')">Home</button>
+        <button class="nav-link px-3 py-1.5 rounded-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors" data-page="dashboard-page" onclick="navigateTo('dashboard-page')">Dashboard</button>
+        <button class="nav-link px-3 py-1.5 rounded-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors" data-page="new-scan-page" onclick="navigateTo('new-scan-page')">New Scan</button>
+        <button class="nav-link px-3 py-1.5 rounded-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors" data-page="history-page" onclick="navigateTo('history-page')">Scan History</button>
+        <button class="nav-link px-3 py-1.5 rounded-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors" data-page="rules-page" onclick="navigateTo('rules-page')">Security Rules</button>
+        <button class="nav-link px-3 py-1.5 rounded-md text-[#8b949e] hover:text-[#f0f6fc] hover:bg-[#21262d] transition-colors" data-page="repo-details-page" onclick="navigateTo('repo-details-page')">Repositories</button>
       </nav>
     </div>
 
     <!-- Header Actions -->
     <div class="flex items-center gap-3">
-      <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium text-slate-400 hover:text-white transition-colors">
+      <a href="/docs" target="_blank" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-[#8b949e] hover:text-[#f0f6fc] transition-colors">
         <i data-lucide="file-code" class="w-3.5 h-3.5"></i> API Docs
       </a>
-      <button onclick="navigateTo('settings-page')" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-white transition-colors" title="Settings">
+      <button onclick="navigateTo('settings-page')" class="p-2 rounded-md bg-[#21262d] border border-[#30363d] hover:border-[#8b949e] text-[#8b949e] hover:text-[#f0f6fc] transition-colors" title="Settings">
         <i data-lucide="settings" class="w-4 h-4"></i>
       </button>
-      <button onclick="navigateTo('new-scan-page')" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-sm hover:shadow-emerald-950 flex items-center gap-1.5">
+      <button onclick="navigateTo('new-scan-page')" class="btn-primary px-3.5 py-1.5 rounded-md text-xs flex items-center gap-1.5">
         <i data-lucide="radar" class="w-3.5 h-3.5"></i> Scan Repo
       </button>
     </div>
@@ -86,32 +84,32 @@
     <!-- ========================================== -->
     <section id="landing-page" class="app-page">
       <!-- Hero Section -->
-      <div class="relative overflow-hidden pt-20 pb-24 border-b border-slate-800/80">
-        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 text-xs font-mono font-medium mb-6">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <div class="pt-20 pb-24 border-b border-[#30363d]">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#161b22] border border-[#30363d] text-[#8b949e] text-xs font-mono font-medium mb-6">
+            <span class="w-2 h-2 rounded-full bg-[#3fb950]"></span>
             Static Analysis & LLM Vulnerability Defense Engine
           </div>
-          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
-            Comprehensive Security & Quality Scanner for <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">AI-Generated Code</span>
+          <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-[#f0f6fc] mb-6 leading-tight">
+            Security & Quality Scanner for <span class="text-[#f0f6fc]">AI-Generated Code</span>
           </h1>
-          <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-            Inspect source repositories for hardcoded credentials, authorization bypasses, SQL injection, Docker weaknesses, and AI/LLM prompt leaks — without executing untrusted code.
+          <p class="text-[#8b949e] text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            Inspect source repositories for hardcoded credentials, authorization bypasses, SQL injection, Docker weaknesses, and AI prompt leaks — without executing untrusted code.
           </p>
 
           <!-- Main Hero Input Box -->
-          <form id="hero-scan-form" class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-2.5 p-2 rounded-xl bg-slate-900/90 border border-slate-800 shadow-2xl">
-            <div class="flex-1 flex items-center gap-2 px-3">
-              <i data-lucide="github" class="w-5 h-5 text-slate-500"></i>
+          <form id="hero-scan-form" class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-2 p-2 rounded-lg bg-[#161b22] border border-[#30363d]">
+            <div class="flex-1 flex items-center gap-2.5 px-3">
+              <i data-lucide="github" class="w-5 h-5 text-[#8b949e]"></i>
               <input id="hero-repo-input" type="url" required placeholder="https://github.com/owner/repository"
-                     class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none font-mono">
+                     class="w-full bg-transparent text-sm text-[#f0f6fc] placeholder-[#8b949e] focus:outline-none font-mono">
             </div>
-            <button type="submit" class="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+            <button type="submit" class="btn-primary px-5 py-2.5 rounded-md text-sm flex items-center justify-center gap-2">
               <i data-lucide="search" class="w-4 h-4"></i> Scan Repository
             </button>
           </form>
 
-          <p class="text-[11px] font-mono text-slate-500 mt-4">
+          <p class="text-[11px] font-mono text-[#6e7681] mt-4">
             Supports Python, JavaScript, TypeScript, Go, Java, Docker, Kubernetes & Terraform
           </p>
         </div>
@@ -120,80 +118,80 @@
       <!-- Feature Grid -->
       <div class="max-w-6xl mx-auto px-6 py-20">
         <div class="text-center mb-14">
-          <h2 class="text-2xl font-bold text-white mb-2">Multi-Layered Security & Quality Guardrails</h2>
-          <p class="text-slate-400 text-xs sm:text-sm">Built-in 52 AST & pattern rules integrated with Semgrep, Gitleaks, and dependency audits.</p>
+          <h2 class="text-2xl font-bold text-[#f0f6fc] mb-2">Multi-Layered Security & Quality Guardrails</h2>
+          <p class="text-[#8b949e] text-xs sm:text-sm">Built-in 52 AST & pattern rules integrated with Semgrep, Gitleaks, and dependency audits.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="glass-panel p-6 rounded-xl border border-slate-800">
-            <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center mb-4">
-              <i data-lucide="key" class="w-5 h-5"></i>
+          <div class="surface-card surface-card-hover p-6 rounded-lg">
+            <div class="w-9 h-9 rounded-md bg-[#21262d] border border-[#30363d] text-[#f85149] flex items-center justify-center mb-4">
+              <i data-lucide="key" class="w-4 h-4"></i>
             </div>
-            <h3 class="text-base font-bold text-white mb-2">Secrets & Credentials</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">Detects exposed API tokens, JWT secrets, private keys, and cloud credentials with automated redaction.</p>
+            <h3 class="text-sm font-semibold text-[#f0f6fc] mb-2">Secrets & Credentials</h3>
+            <p class="text-xs text-[#8b949e] leading-relaxed">Detects exposed API tokens, JWT secrets, private keys, and cloud credentials with automated redaction.</p>
           </div>
 
-          <div class="glass-panel p-6 rounded-xl border border-slate-800">
-            <div class="w-10 h-10 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center mb-4">
-              <i data-lucide="bot" class="w-5 h-5"></i>
+          <div class="surface-card surface-card-hover p-6 rounded-lg">
+            <div class="w-9 h-9 rounded-md bg-[#21262d] border border-[#30363d] text-[#f0883e] flex items-center justify-center mb-4">
+              <i data-lucide="bot" class="w-4 h-4"></i>
             </div>
-            <h3 class="text-base font-bold text-white mb-2">AI & LLM Security</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">Flags untrusted prompt concatenation, LLM-to-SQL sinks, excessive agency, and unvalidated tool calls.</p>
+            <h3 class="text-sm font-semibold text-[#f0f6fc] mb-2">AI & LLM Security</h3>
+            <p class="text-xs text-[#8b949e] leading-relaxed">Flags untrusted prompt concatenation, LLM-to-SQL sinks, excessive agency, and unvalidated tool calls.</p>
           </div>
 
-          <div class="glass-panel p-6 rounded-xl border border-slate-800">
-            <div class="w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 flex items-center justify-center mb-4">
-              <i data-lucide="shield" class="w-5 h-5"></i>
+          <div class="surface-card surface-card-hover p-6 rounded-lg">
+            <div class="w-9 h-9 rounded-md bg-[#21262d] border border-[#30363d] text-[#d29922] flex items-center justify-center mb-4">
+              <i data-lucide="shield" class="w-4 h-4"></i>
             </div>
-            <h3 class="text-base font-bold text-white mb-2">Backend & OWASP</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">AST-driven detection of SQL injection, command execution, path traversal, IDOR, and missing auth gates.</p>
+            <h3 class="text-sm font-semibold text-[#f0f6fc] mb-2">Backend & OWASP</h3>
+            <p class="text-xs text-[#8b949e] leading-relaxed">AST-driven detection of SQL injection, command execution, path traversal, IDOR, and missing auth gates.</p>
           </div>
 
-          <div class="glass-panel p-6 rounded-xl border border-slate-800">
-            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
-              <i data-lucide="container" class="w-5 h-5"></i>
+          <div class="surface-card surface-card-hover p-6 rounded-lg">
+            <div class="w-9 h-9 rounded-md bg-[#21262d] border border-[#30363d] text-[#58a6ff] flex items-center justify-center mb-4">
+              <i data-lucide="container" class="w-4 h-4"></i>
             </div>
-            <h3 class="text-base font-bold text-white mb-2">Cloud & Infra Config</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">Analyzes Dockerfiles for root execution, Kubernetes hostPath mounts, and unencrypted Terraform storage.</p>
+            <h3 class="text-sm font-semibold text-[#f0f6fc] mb-2">Cloud & Infra Config</h3>
+            <p class="text-xs text-[#8b949e] leading-relaxed">Analyzes Dockerfiles for root execution, Kubernetes hostPath mounts, and unencrypted Terraform storage.</p>
           </div>
         </div>
       </div>
 
       <!-- How It Works Section -->
-      <div class="bg-[#0b101c] py-20 border-t border-b border-slate-800/80">
+      <div class="bg-[#161b22] py-20 border-t border-b border-[#30363d]">
         <div class="max-w-5xl mx-auto px-6">
           <div class="text-center mb-14">
-            <h2 class="text-2xl font-bold text-white mb-2">How It Works</h2>
-            <p class="text-slate-400 text-sm">Enterprise asynchronous architecture with guaranteed safe zero-execution isolation.</p>
+            <h2 class="text-2xl font-bold text-[#f0f6fc] mb-2">How It Works</h2>
+            <p class="text-[#8b949e] text-sm">Enterprise asynchronous architecture with guaranteed zero-execution code isolation.</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span class="text-xs font-mono font-bold text-emerald-400 mb-2 block">STEP 01</span>
-              <h4 class="text-sm font-bold text-white mb-1">Submit Repository</h4>
-              <p class="text-xs text-slate-400">FastAPI validates GitHub URL and publishes scan event to Apache Kafka in under 5ms.</p>
+            <div class="p-5 rounded-lg bg-[#0d1117] border border-[#30363d]">
+              <span class="text-xs font-mono font-semibold text-[#8b949e] mb-2 block">STEP 01</span>
+              <h4 class="text-xs font-bold text-[#f0f6fc] mb-1">Submit Repository</h4>
+              <p class="text-xs text-[#8b949e]">FastAPI validates GitHub URL and publishes scan event to Apache Kafka in under 5ms.</p>
             </div>
-            <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span class="text-xs font-mono font-bold text-emerald-400 mb-2 block">STEP 02</span>
-              <h4 class="text-sm font-bold text-white mb-1">Safe Shallow Clone</h4>
-              <p class="text-xs text-slate-400">Isolated background worker retrieves repository into temporary directory without executing code.</p>
+            <div class="p-5 rounded-lg bg-[#0d1117] border border-[#30363d]">
+              <span class="text-xs font-mono font-semibold text-[#8b949e] mb-2 block">STEP 02</span>
+              <h4 class="text-xs font-bold text-[#f0f6fc] mb-1">Safe Shallow Clone</h4>
+              <p class="text-xs text-[#8b949e]">Isolated background worker retrieves repository into temporary directory without executing code.</p>
             </div>
-            <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span class="text-xs font-mono font-bold text-emerald-400 mb-2 block">STEP 03</span>
-              <h4 class="text-sm font-bold text-white mb-1">52-Rule Static Engine</h4>
-              <p class="text-xs text-slate-400">Executes AST parsing, secret entropy filters, Gitleaks, and dependency vulnerability checks.</p>
+            <div class="p-5 rounded-lg bg-[#0d1117] border border-[#30363d]">
+              <span class="text-xs font-mono font-semibold text-[#8b949e] mb-2 block">STEP 03</span>
+              <h4 class="text-xs font-bold text-[#f0f6fc] mb-1">52-Rule Static Engine</h4>
+              <p class="text-xs text-[#8b949e]">Executes AST parsing, secret entropy filters, Gitleaks, and dependency vulnerability checks.</p>
             </div>
-            <div class="p-5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span class="text-xs font-mono font-bold text-emerald-400 mb-2 block">STEP 04</span>
-              <h4 class="text-sm font-bold text-white mb-1">Actionable Report</h4>
-              <p class="text-xs text-slate-400">Findings normalized into standard models with automatic secret masking, scoring, and PDF export.</p>
+            <div class="p-5 rounded-lg bg-[#0d1117] border border-[#30363d]">
+              <span class="text-xs font-mono font-semibold text-[#8b949e] mb-2 block">STEP 04</span>
+              <h4 class="text-xs font-bold text-[#f0f6fc] mb-1">Actionable Report</h4>
+              <p class="text-xs text-[#8b949e]">Findings normalized into standard models with automatic secret masking, scoring, and PDF export.</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Footer -->
-      <footer class="py-8 border-t border-slate-800/80 text-center text-xs text-slate-500 font-mono">
+      <footer class="py-8 border-t border-[#30363d] text-center text-xs text-[#6e7681] font-mono">
         AI App Security & Quality Scanner &bull; Open-Source Backend Engineering Architecture
       </footer>
     </section>
@@ -205,64 +203,64 @@
     <section id="dashboard-page" class="app-page hidden max-w-7xl mx-auto px-6 py-8 w-full">
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h1 class="text-2xl font-bold text-white">Security Intelligence Dashboard</h1>
-          <p class="text-xs text-slate-400 font-mono">Live telemetry aggregated across all scanned repositories</p>
+          <h1 class="text-2xl font-bold text-[#f0f6fc]">Security Intelligence Dashboard</h1>
+          <p class="text-xs text-[#8b949e] font-mono">Live telemetry aggregated across all scanned repositories</p>
         </div>
-        <button onclick="navigateTo('new-scan-page')" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors">
-          <i data-lucide="plus" class="w-4 h-4"></i> New Scan
+        <button onclick="navigateTo('new-scan-page')" class="btn-primary px-3.5 py-1.5 rounded-md text-xs flex items-center gap-1.5">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i> New Scan
         </button>
       </div>
 
       <!-- Key Metrics Row -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div class="glass-panel p-5 rounded-xl border border-slate-800">
-          <span class="text-xs font-medium text-slate-400 block mb-1">Repositories Scanned</span>
-          <div class="text-2xl font-extrabold text-white font-mono" id="stat-total-repos">-</div>
+        <div class="surface-card p-5 rounded-lg">
+          <span class="text-xs text-[#8b949e] block mb-1">Repositories Scanned</span>
+          <div class="text-2xl font-bold text-[#f0f6fc] font-mono" id="stat-total-repos">-</div>
         </div>
-        <div class="glass-panel p-5 rounded-xl border border-slate-800">
-          <span class="text-xs font-medium text-slate-400 block mb-1">Total Vulnerabilities</span>
-          <div class="text-2xl font-extrabold text-red-400 font-mono" id="stat-total-vulns">-</div>
+        <div class="surface-card p-5 rounded-lg">
+          <span class="text-xs text-[#8b949e] block mb-1">Total Vulnerabilities</span>
+          <div class="text-2xl font-bold text-[#f85149] font-mono" id="stat-total-vulns">-</div>
         </div>
-        <div class="glass-panel p-5 rounded-xl border border-slate-800">
-          <span class="text-xs font-medium text-slate-400 block mb-1">Total Scan Jobs</span>
-          <div class="text-2xl font-extrabold text-slate-200 font-mono" id="stat-total-scans">-</div>
+        <div class="surface-card p-5 rounded-lg">
+          <span class="text-xs text-[#8b949e] block mb-1">Total Scan Jobs</span>
+          <div class="text-2xl font-bold text-[#f0f6fc] font-mono" id="stat-total-scans">-</div>
         </div>
-        <div class="glass-panel p-5 rounded-xl border border-slate-800">
-          <span class="text-xs font-medium text-slate-400 block mb-1">Pipeline Success Rate</span>
-          <div class="text-2xl font-extrabold text-emerald-400 font-mono" id="stat-success-rate">100%</div>
+        <div class="surface-card p-5 rounded-lg">
+          <span class="text-xs text-[#8b949e] block mb-1">Pipeline Success Rate</span>
+          <div class="text-2xl font-bold text-[#3fb950] font-mono" id="stat-success-rate">100%</div>
         </div>
       </div>
 
-      <!-- Severity Distribution Pills -->
+      <!-- Severity Distribution Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         <div class="p-3.5 rounded-lg badge-critical flex items-center justify-between">
-          <span class="text-xs font-bold uppercase">Critical</span>
-          <span id="pill-crit-count" class="font-mono font-extrabold text-base">0</span>
+          <span class="text-xs font-semibold uppercase">Critical</span>
+          <span id="pill-crit-count" class="font-mono font-bold text-base">0</span>
         </div>
         <div class="p-3.5 rounded-lg badge-high flex items-center justify-between">
-          <span class="text-xs font-bold uppercase">High</span>
-          <span id="pill-high-count" class="font-mono font-extrabold text-base">0</span>
+          <span class="text-xs font-semibold uppercase">High</span>
+          <span id="pill-high-count" class="font-mono font-bold text-base">0</span>
         </div>
         <div class="p-3.5 rounded-lg badge-medium flex items-center justify-between">
-          <span class="text-xs font-bold uppercase">Medium</span>
-          <span id="pill-med-count" class="font-mono font-extrabold text-base">0</span>
+          <span class="text-xs font-semibold uppercase">Medium</span>
+          <span id="pill-med-count" class="font-mono font-bold text-base">0</span>
         </div>
         <div class="p-3.5 rounded-lg badge-low flex items-center justify-between">
-          <span class="text-xs font-bold uppercase">Low / Info</span>
-          <span id="pill-low-count" class="font-mono font-extrabold text-base">0</span>
+          <span class="text-xs font-semibold uppercase">Low / Info</span>
+          <span id="pill-low-count" class="font-mono font-bold text-base">0</span>
         </div>
       </div>
 
       <!-- Charts Row -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div class="glass-panel p-5 rounded-xl border border-slate-800 flex flex-col">
-          <h3 class="text-sm font-bold text-white mb-4">Severity Breakdown</h3>
+        <div class="surface-card p-5 rounded-lg flex flex-col">
+          <h3 class="text-xs font-semibold uppercase text-[#8b949e] mb-4">Severity Breakdown</h3>
           <div class="relative flex-1 min-h-[220px]">
             <canvas id="dashboard-severity-chart"></canvas>
           </div>
         </div>
-        <div class="glass-panel p-5 rounded-xl border border-slate-800 flex flex-col">
-          <h3 class="text-sm font-bold text-white mb-4">Top Vulnerability Categories</h3>
+        <div class="surface-card p-5 rounded-lg flex flex-col">
+          <h3 class="text-xs font-semibold uppercase text-[#8b949e] mb-4">Top Vulnerability Categories</h3>
           <div class="relative flex-1 min-h-[220px]">
             <canvas id="dashboard-category-chart"></canvas>
           </div>
@@ -270,14 +268,14 @@
       </div>
 
       <!-- Recent Scans Table -->
-      <div class="glass-panel rounded-xl border border-slate-800 overflow-hidden">
-        <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between">
-          <h3 class="text-sm font-bold text-white">Recent Repository Scans</h3>
-          <button onclick="navigateTo('history-page')" class="text-xs font-mono text-emerald-400 hover:text-emerald-300">View All &rarr;</button>
+      <div class="surface-card rounded-lg overflow-hidden">
+        <div class="px-5 py-4 border-b border-[#30363d] flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-[#f0f6fc]">Recent Repository Scans</h3>
+          <button onclick="navigateTo('history-page')" class="text-xs font-mono text-[#58a6ff] hover:underline">View All &rarr;</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-slate-900/60 text-slate-400 font-mono uppercase text-[10px]">
+            <thead class="bg-[#161b22] text-[#8b949e] font-mono uppercase text-[10px] border-b border-[#30363d]">
               <tr>
                 <th class="py-3 px-4">Repository</th>
                 <th class="py-3 px-4">Risk Score</th>
@@ -286,7 +284,7 @@
                 <th class="py-3 px-4">Date</th>
               </tr>
             </thead>
-            <tbody id="dashboard-recent-scans" class="divide-y divide-slate-800/60">
+            <tbody id="dashboard-recent-scans" class="divide-y divide-[#21262d]">
               <!-- Dynamically populated -->
             </tbody>
           </table>
@@ -300,53 +298,53 @@
     <!-- ========================================== -->
     <section id="new-scan-page" class="app-page hidden max-w-3xl mx-auto px-6 py-12 w-full">
       <div class="mb-8">
-        <h1 class="text-2xl font-bold text-white mb-1">New Repository Security Scan</h1>
-        <p class="text-xs text-slate-400">Submit a GitHub repository to trigger the asynchronous distributed analysis pipeline.</p>
+        <h1 class="text-2xl font-bold text-[#f0f6fc] mb-1">New Repository Security Scan</h1>
+        <p class="text-xs text-[#8b949e]">Submit a GitHub repository to trigger the asynchronous distributed analysis pipeline.</p>
       </div>
 
-      <form id="new-scan-form" class="glass-panel p-8 rounded-xl border border-slate-800 space-y-6">
+      <form id="new-scan-form" class="surface-card p-8 rounded-lg space-y-6">
         <div>
-          <label class="block text-xs font-mono uppercase text-slate-400 mb-2">GitHub Repository URL *</label>
-          <div class="flex items-center gap-2 p-3 rounded-lg bg-slate-900 border border-slate-800 focus-within:border-emerald-500 transition-colors">
-            <i data-lucide="github" class="w-5 h-5 text-slate-500"></i>
+          <label class="block text-xs font-mono uppercase text-[#8b949e] mb-2">GitHub Repository URL *</label>
+          <div class="flex items-center gap-2.5 p-3 rounded-md bg-[#0d1117] border border-[#30363d] focus-within:border-[#58a6ff] transition-colors">
+            <i data-lucide="github" class="w-5 h-5 text-[#8b949e]"></i>
             <input id="new-scan-url" type="url" required placeholder="https://github.com/fastapi/fastapi"
-                   class="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none font-mono">
+                   class="w-full bg-transparent text-sm text-[#f0f6fc] placeholder-[#6e7681] focus:outline-none font-mono">
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-mono uppercase text-slate-400 mb-2">Target Branch</label>
-            <input type="text" value="main" class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            <label class="block text-xs font-mono uppercase text-[#8b949e] mb-2">Target Branch</label>
+            <input type="text" value="main" class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#f0f6fc] font-mono focus:outline-none focus:border-[#58a6ff]">
           </div>
           <div>
-            <label class="block text-xs font-mono uppercase text-slate-400 mb-2">Repository Visibility</label>
-            <select class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            <label class="block text-xs font-mono uppercase text-[#8b949e] mb-2">Repository Visibility</label>
+            <select class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#f0f6fc] font-mono focus:outline-none focus:border-[#58a6ff]">
               <option value="public">Public Repository</option>
               <option value="private">Private (Uses configured Personal Token)</option>
             </select>
           </div>
         </div>
 
-        <div class="pt-4 border-t border-slate-800">
-          <label class="block text-xs font-mono uppercase text-slate-400 mb-3">Analysis Suite Options</label>
-          <div class="space-y-2 text-xs">
-            <label class="flex items-center gap-2.5 text-slate-300">
-              <input type="checkbox" checked disabled class="rounded border-slate-700 text-emerald-500">
+        <div class="pt-4 border-t border-[#30363d]">
+          <label class="block text-xs font-mono uppercase text-[#8b949e] mb-3">Analysis Suite Options</label>
+          <div class="space-y-2.5 text-xs">
+            <label class="flex items-center gap-2.5 text-[#c9d1d9]">
+              <input type="checkbox" checked disabled class="rounded border-[#30363d] bg-[#0d1117]">
               <span>Built-in 52 Security Rule AST Engine (Authentication, SQLi, Secrets, AI Boundaries)</span>
             </label>
-            <label class="flex items-center gap-2.5 text-slate-300">
-              <input type="checkbox" checked class="rounded border-slate-700 text-emerald-500">
+            <label class="flex items-center gap-2.5 text-[#c9d1d9]">
+              <input type="checkbox" checked class="rounded border-[#30363d] bg-[#0d1117]">
               <span>External Analyzers (Semgrep, Gitleaks, pip-audit adapters if available)</span>
             </label>
-            <label class="flex items-center gap-2.5 text-slate-300">
-              <input type="checkbox" checked class="rounded border-slate-700 text-emerald-500">
+            <label class="flex items-center gap-2.5 text-[#c9d1d9]">
+              <input type="checkbox" checked class="rounded border-[#30363d] bg-[#0d1117]">
               <span>Automatic Credential Masking in Evidence Snippets</span>
             </label>
           </div>
         </div>
 
-        <button type="submit" class="w-full py-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-950">
+        <button type="submit" class="btn-primary w-full py-3 rounded-md text-sm flex items-center justify-center gap-2">
           <i data-lucide="play" class="w-4 h-4"></i> Start Security Analysis
         </button>
       </form>
@@ -357,62 +355,62 @@
     <!-- PAGE 4: LIVE SCAN PROGRESS -->
     <!-- ========================================== -->
     <section id="scan-progress-page" class="app-page hidden max-w-4xl mx-auto px-6 py-12 w-full">
-      <div class="glass-panel p-8 rounded-xl border border-slate-800 mb-8">
-        <div class="flex items-center justify-between pb-6 border-b border-slate-800 mb-6">
+      <div class="surface-card p-8 rounded-lg mb-8">
+        <div class="flex items-center justify-between pb-6 border-b border-[#30363d] mb-6">
           <div>
-            <span class="text-[10px] font-mono uppercase text-slate-500 block mb-1">SCANNING REPOSITORY</span>
-            <h2 id="progress-repo-url" class="text-lg font-bold text-white font-mono truncate">-</h2>
-            <div class="text-xs text-slate-400 font-mono mt-1">ID: <span id="progress-scan-id">-</span></div>
+            <span class="text-[10px] font-mono uppercase text-[#8b949e] block mb-1">SCANNING REPOSITORY</span>
+            <h2 id="progress-repo-url" class="text-base font-bold text-[#f0f6fc] font-mono truncate">-</h2>
+            <div class="text-xs text-[#8b949e] font-mono mt-1">ID: <span id="progress-scan-id">-</span></div>
           </div>
           <div class="text-right">
-            <span id="progress-status-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-950 text-yellow-300 border border-yellow-800">
+            <span id="progress-status-badge" class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-[#21262d] text-[#e3b341] border border-[#d29922]/40">
               QUEUED
             </span>
-            <div class="text-xs text-slate-400 font-mono mt-2">Elapsed: <span id="progress-elapsed" class="text-emerald-400 font-bold">00:00s</span></div>
+            <div class="text-xs text-[#8b949e] font-mono mt-2">Elapsed: <span id="progress-elapsed" class="text-[#f0f6fc] font-bold">00:00s</span></div>
           </div>
         </div>
 
         <!-- 10 Scanning Stages -->
-        <div class="space-y-3">
-          <div id="stage-validation" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">1</div>
-            <span class="stage-label text-xs text-slate-400">1. GitHub repository URL validation & DNS verification</span>
+        <div class="space-y-2">
+          <div id="stage-validation" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">1</div>
+            <span class="stage-label text-xs text-[#8b949e]">1. GitHub repository URL validation & DNS verification</span>
           </div>
-          <div id="stage-acquisition" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">2</div>
-            <span class="stage-label text-xs text-slate-400">2. Shallow repository clone into isolated sandbox directory</span>
+          <div id="stage-acquisition" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">2</div>
+            <span class="stage-label text-xs text-[#8b949e]">2. Shallow repository clone into isolated sandbox directory</span>
           </div>
-          <div id="stage-structure" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">3</div>
-            <span class="stage-label text-xs text-slate-400">3. Repository structure discovery & language/framework detection</span>
+          <div id="stage-structure" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">3</div>
+            <span class="stage-label text-xs text-[#8b949e]">3. Repository structure discovery & language detection</span>
           </div>
-          <div id="stage-secrets" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">4</div>
-            <span class="stage-label text-xs text-slate-400">4. High-entropy secret & credential detection (Gitleaks adapter)</span>
+          <div id="stage-secrets" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">4</div>
+            <span class="stage-label text-xs text-[#8b949e]">4. High-entropy secret & credential detection (Gitleaks adapter)</span>
           </div>
-          <div id="stage-static" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">5</div>
-            <span class="stage-label text-xs text-slate-400">5. Static Python AST & Regex security rule analysis (OWASP Top 10)</span>
+          <div id="stage-static" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">5</div>
+            <span class="stage-label text-xs text-[#8b949e]">5. Static Python AST & Regex security rule analysis (OWASP Top 10)</span>
           </div>
-          <div id="stage-dependencies" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">6</div>
-            <span class="stage-label text-xs text-slate-400">6. Dependency vulnerability auditing (pip-audit & OSV catalog)</span>
+          <div id="stage-dependencies" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">6</div>
+            <span class="stage-label text-xs text-[#8b949e]">6. Dependency vulnerability auditing (pip-audit & OSV catalog)</span>
           </div>
-          <div id="stage-docker" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">7</div>
-            <span class="stage-label text-xs text-slate-400">7. Docker, Kubernetes, & Terraform infrastructure misconfiguration checks</span>
+          <div id="stage-docker" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">7</div>
+            <span class="stage-label text-xs text-[#8b949e]">7. Docker, Kubernetes, & Terraform infrastructure misconfiguration checks</span>
           </div>
-          <div id="stage-ai" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">8</div>
-            <span class="stage-label text-xs text-slate-400">8. AI application security (Prompt injection & LLM sink analysis)</span>
+          <div id="stage-ai" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">8</div>
+            <span class="stage-label text-xs text-[#8b949e]">8. AI application security (Prompt injection & LLM sink analysis)</span>
           </div>
-          <div id="stage-normalization" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">9</div>
-            <span class="stage-label text-xs text-slate-400">9. Common finding normalization & automated secret redaction</span>
+          <div id="stage-normalization" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">9</div>
+            <span class="stage-label text-xs text-[#8b949e]">9. Common finding normalization & automated secret redaction</span>
           </div>
-          <div id="stage-report" class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-900/40">
-            <div class="stage-dot w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-mono">10</div>
-            <span class="stage-label text-xs text-slate-400">10. Risk score computation & PostgreSQL report persistence</span>
+          <div id="stage-report" class="flex items-center gap-3 p-2.5 rounded-md bg-[#0d1117] border border-[#21262d]">
+            <div class="stage-dot w-5 h-5 rounded-full bg-[#161b22] border border-[#30363d] flex items-center justify-center text-[10px] font-mono text-[#8b949e]">10</div>
+            <span class="stage-label text-xs text-[#8b949e]">10. Risk score computation & PostgreSQL report persistence</span>
           </div>
         </div>
       </div>
@@ -424,24 +422,24 @@
     <!-- ========================================== -->
     <section id="scan-results-page" class="app-page hidden max-w-7xl mx-auto px-6 py-8 w-full">
       <!-- Report Header -->
-      <div class="glass-panel p-6 rounded-xl border border-slate-800 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="surface-card p-6 rounded-lg mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-mono uppercase text-slate-500 block mb-1">SCAN REPORT</span>
-          <h1 id="report-repo-url" class="text-xl font-bold text-white font-mono truncate">-</h1>
-          <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400 font-mono mt-1">
+          <span class="text-[10px] font-mono uppercase text-[#8b949e] block mb-1">SCAN REPORT</span>
+          <h1 id="report-repo-url" class="text-lg font-bold text-[#f0f6fc] font-mono truncate">-</h1>
+          <div class="flex flex-wrap items-center gap-3 text-xs text-[#8b949e] font-mono mt-1">
             <span>ID: <span id="report-scan-id">-</span></span>
             <span>&bull;</span>
             <span>Date: <span id="report-timestamp">-</span></span>
             <span>&bull;</span>
-            <span id="report-duration" class="text-emerald-400">Completed</span>
+            <span id="report-duration" class="text-[#3fb950]">Completed</span>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
-          <button id="btn-download-json" class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-medium flex items-center gap-1.5 transition-colors">
+          <button id="btn-download-json" class="btn-secondary px-3.5 py-1.5 rounded-md text-xs flex items-center gap-1.5">
             <i data-lucide="file-json" class="w-3.5 h-3.5"></i> Download JSON
           </button>
-          <button id="btn-download-pdf" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 transition-colors">
+          <button id="btn-download-pdf" class="btn-primary px-3.5 py-1.5 rounded-md text-xs flex items-center gap-1.5">
             <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Download PDF
           </button>
         </div>
@@ -450,72 +448,72 @@
       <!-- Risk Score & Breakdown Row -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <!-- Risk Gauge Card -->
-        <div class="glass-panel p-6 rounded-xl border border-slate-800 flex flex-col justify-between">
+        <div class="surface-card p-6 rounded-lg flex flex-col justify-between">
           <div>
-            <span class="text-xs font-mono uppercase text-slate-400 block mb-1">Overall Security Risk</span>
+            <span class="text-xs font-mono uppercase text-[#8b949e] block mb-1">Overall Security Risk</span>
             <div class="flex items-baseline gap-2 mb-2">
-              <span id="report-risk-score" class="text-4xl font-black font-mono text-white">0.0</span>
-              <span class="text-xs text-slate-500 font-mono">/ 100</span>
+              <span id="report-risk-score" class="text-3xl font-bold font-mono text-[#f0f6fc]">0.0</span>
+              <span class="text-xs text-[#6e7681] font-mono">/ 100</span>
             </div>
-            <div id="report-risk-category" class="text-sm font-semibold uppercase text-emerald-400 mb-4">Clean Risk</div>
+            <div id="report-risk-category" class="text-xs font-semibold uppercase text-[#3fb950] mb-4">Clean Risk</div>
           </div>
           <!-- Gauge Meter -->
-          <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
-            <div id="report-risk-meter" class="h-full rounded-full bg-emerald-500 transition-all duration-700" style="width: 0%"></div>
+          <div class="w-full bg-[#0d1117] h-2 rounded-full overflow-hidden border border-[#30363d]">
+            <div id="report-risk-meter" class="h-full rounded-full bg-[#238636] transition-all duration-700" style="width: 0%"></div>
           </div>
         </div>
 
         <!-- Severity Filter Buttons -->
-        <div class="glass-panel p-6 rounded-xl border border-slate-800 md:col-span-2 flex flex-col justify-between">
+        <div class="surface-card p-6 rounded-lg md:col-span-2 flex flex-col justify-between">
           <div>
-            <span class="text-xs font-mono uppercase text-slate-400 block mb-3">Vulnerability Breakdown (Click to filter)</span>
+            <span class="text-xs font-mono uppercase text-[#8b949e] block mb-3">Vulnerability Breakdown (Click to filter)</span>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <button data-severity="critical" class="filter-sev-btn p-3 rounded-lg badge-critical text-left hover:brightness-110 transition-all">
-                <span class="text-[10px] uppercase font-bold block">Critical</span>
-                <span id="count-crit" class="text-xl font-black font-mono">0</span>
+              <button data-severity="critical" class="filter-sev-btn p-3 rounded-md badge-critical text-left transition-colors">
+                <span class="text-[10px] uppercase font-semibold block">Critical</span>
+                <span id="count-crit" class="text-lg font-bold font-mono">0</span>
               </button>
-              <button data-severity="high" class="filter-sev-btn p-3 rounded-lg badge-high text-left hover:brightness-110 transition-all">
-                <span class="text-[10px] uppercase font-bold block">High</span>
-                <span id="count-high" class="text-xl font-black font-mono">0</span>
+              <button data-severity="high" class="filter-sev-btn p-3 rounded-md badge-high text-left transition-colors">
+                <span class="text-[10px] uppercase font-semibold block">High</span>
+                <span id="count-high" class="text-lg font-bold font-mono">0</span>
               </button>
-              <button data-severity="medium" class="filter-sev-btn p-3 rounded-lg badge-medium text-left hover:brightness-110 transition-all">
-                <span class="text-[10px] uppercase font-bold block">Medium</span>
-                <span id="count-med" class="text-xl font-black font-mono">0</span>
+              <button data-severity="medium" class="filter-sev-btn p-3 rounded-md badge-medium text-left transition-colors">
+                <span class="text-[10px] uppercase font-semibold block">Medium</span>
+                <span id="count-med" class="text-lg font-bold font-mono">0</span>
               </button>
-              <button data-severity="low" class="filter-sev-btn p-3 rounded-lg badge-low text-left hover:brightness-110 transition-all">
-                <span class="text-[10px] uppercase font-bold block">Low / Info</span>
-                <span id="count-low" class="text-xl font-black font-mono">0</span>
+              <button data-severity="low" class="filter-sev-btn p-3 rounded-md badge-low text-left transition-colors">
+                <span class="text-[10px] uppercase font-semibold block">Low / Info</span>
+                <span id="count-low" class="text-lg font-bold font-mono">0</span>
               </button>
             </div>
           </div>
-          <div class="mt-4 flex items-center justify-between text-xs text-slate-400 font-mono">
-            <span>Total Findings: <span id="report-total-findings" class="text-white font-bold">0</span></span>
-            <button data-severity="all" class="filter-sev-btn text-emerald-400 hover:underline">Show All Findings</button>
+          <div class="mt-4 flex items-center justify-between text-xs text-[#8b949e] font-mono">
+            <span>Total Findings: <span id="report-total-findings" class="text-[#f0f6fc] font-bold">0</span></span>
+            <button data-severity="all" class="filter-sev-btn text-[#58a6ff] hover:underline">Show All Findings</button>
           </div>
         </div>
       </div>
 
       <!-- Findings Filter & Search Bar -->
-      <div class="glass-panel p-4 rounded-xl border border-slate-800 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="w-full sm:w-80 flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-900 border border-slate-800">
-          <i data-lucide="search" class="w-4 h-4 text-slate-500"></i>
+      <div class="surface-card p-3 rounded-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="w-full sm:w-80 flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#0d1117] border border-[#30363d]">
+          <i data-lucide="search" class="w-4 h-4 text-[#8b949e]"></i>
           <input id="findings-search" type="text" placeholder="Search rules, files, descriptions..."
-                 class="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none">
+                 class="w-full bg-transparent text-xs text-[#f0f6fc] placeholder-[#6e7681] focus:outline-none">
         </div>
 
         <div class="flex items-center gap-3 w-full sm:w-auto">
-          <select id="filter-category-select" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 font-mono focus:outline-none">
+          <select id="filter-category-select" class="p-1.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#c9d1d9] font-mono focus:outline-none">
             <option value="all">All Categories</option>
           </select>
-          <span id="findings-match-count" class="text-xs font-mono text-slate-500 whitespace-nowrap">0 findings</span>
+          <span id="findings-match-count" class="text-xs font-mono text-[#8b949e] whitespace-nowrap">0 findings</span>
         </div>
       </div>
 
       <!-- Findings Table -->
-      <div class="glass-panel rounded-xl border border-slate-800 overflow-hidden mb-8">
+      <div class="surface-card rounded-lg overflow-hidden mb-8">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-slate-900/60 text-slate-400 font-mono uppercase text-[10px]">
+            <thead class="bg-[#161b22] text-[#8b949e] font-mono uppercase text-[10px] border-b border-[#30363d]">
               <tr>
                 <th class="py-3 px-4">Severity</th>
                 <th class="py-3 px-4">Rule ID</th>
@@ -525,7 +523,7 @@
                 <th class="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="findings-table-body" class="divide-y divide-slate-800/60">
+            <tbody id="findings-table-body" class="divide-y divide-[#21262d]">
               <!-- Dynamically populated -->
             </tbody>
           </table>
@@ -540,11 +538,11 @@
     <section id="repo-details-page" class="app-page hidden max-w-6xl mx-auto px-6 py-8 w-full">
       <div class="flex items-center justify-between mb-8">
         <div>
-          <h1 class="text-2xl font-bold text-white mb-1">Tracked Repositories</h1>
-          <p class="text-xs text-slate-400 font-mono">Discovered codebases and scanning history</p>
+          <h1 class="text-2xl font-bold text-[#f0f6fc] mb-1">Tracked Repositories</h1>
+          <p class="text-xs text-[#8b949e] font-mono">Discovered codebases and scanning history</p>
         </div>
-        <button onclick="navigateTo('new-scan-page')" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center gap-1.5 transition-colors">
-          <i data-lucide="plus" class="w-4 h-4"></i> Add Repository
+        <button onclick="navigateTo('new-scan-page')" class="btn-primary px-3.5 py-1.5 rounded-md text-xs flex items-center gap-1.5">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Repository
         </button>
       </div>
 
@@ -560,55 +558,55 @@
     <!-- ========================================== -->
     <section id="history-page" class="app-page hidden max-w-6xl mx-auto px-6 py-8 w-full">
       <div class="mb-8">
-        <h1 class="text-2xl font-bold text-white mb-1">Scan History & Diff Comparison</h1>
-        <p class="text-xs text-slate-400 font-mono">Review past scan executions or compare two scans to audit new vs resolved vulnerabilities</p>
+        <h1 class="text-2xl font-bold text-[#f0f6fc] mb-1">Scan History & Diff Comparison</h1>
+        <p class="text-xs text-[#8b949e] font-mono">Review past scan executions or compare two scans to audit new vs resolved vulnerabilities</p>
       </div>
 
       <!-- Diff Comparison Card -->
-      <div class="glass-panel p-6 rounded-xl border border-slate-800 mb-8">
-        <h3 class="text-sm font-bold text-white mb-3">Compare Two Scans</h3>
+      <div class="surface-card p-6 rounded-lg mb-8">
+        <h3 class="text-xs font-semibold uppercase text-[#8b949e] mb-3">Compare Two Scans</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label class="block text-xs font-mono text-slate-400 mb-1">Baseline Scan (Scan A)</label>
-            <select id="compare-scan-a" class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200 font-mono focus:outline-none"></select>
+            <label class="block text-xs font-mono text-[#8b949e] mb-1">Baseline Scan (Scan A)</label>
+            <select id="compare-scan-a" class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#c9d1d9] font-mono focus:outline-none"></select>
           </div>
           <div>
-            <label class="block text-xs font-mono text-slate-400 mb-1">Target Scan (Scan B)</label>
-            <select id="compare-scan-b" class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200 font-mono focus:outline-none"></select>
+            <label class="block text-xs font-mono text-[#8b949e] mb-1">Target Scan (Scan B)</label>
+            <select id="compare-scan-b" class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#c9d1d9] font-mono focus:outline-none"></select>
           </div>
         </div>
-        <button onclick="runScanComparison()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors">
+        <button onclick="runScanComparison()" class="btn-primary px-4 py-2 rounded-md text-xs">
           Compare Scans
         </button>
 
         <!-- Diff Results (Hidden by default) -->
-        <div id="compare-results-container" class="hidden mt-6 pt-6 border-t border-slate-800">
+        <div id="compare-results-container" class="hidden mt-6 pt-6 border-t border-[#30363d]">
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-            <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-center">
-              <span class="text-[10px] font-mono uppercase text-slate-400 block">Risk Score Delta</span>
-              <span id="diff-score-delta" class="text-xl font-bold font-mono text-white">0</span>
+            <div class="p-3 rounded-md bg-[#0d1117] border border-[#30363d] text-center">
+              <span class="text-[10px] font-mono uppercase text-[#8b949e] block">Risk Score Delta</span>
+              <span id="diff-score-delta" class="text-lg font-bold font-mono text-[#f0f6fc]">0</span>
             </div>
-            <div class="p-3 rounded-lg bg-red-950/30 border border-red-900/50 text-center">
-              <span class="text-[10px] font-mono uppercase text-red-400 block">New Vulnerabilities</span>
-              <span id="diff-new-count" class="text-xl font-bold font-mono text-red-400">0</span>
+            <div class="p-3 rounded-md bg-[#0d1117] border border-[#f85149]/30 text-center">
+              <span class="text-[10px] font-mono uppercase text-[#f85149] block">New Vulnerabilities</span>
+              <span id="diff-new-count" class="text-lg font-bold font-mono text-[#f85149]">0</span>
             </div>
-            <div class="p-3 rounded-lg bg-emerald-950/30 border border-emerald-900/50 text-center">
-              <span class="text-[10px] font-mono uppercase text-emerald-400 block">Resolved Vulnerabilities</span>
-              <span id="diff-resolved-count" class="text-xl font-bold font-mono text-emerald-400">0</span>
+            <div class="p-3 rounded-md bg-[#0d1117] border border-[#238636]/40 text-center">
+              <span class="text-[10px] font-mono uppercase text-[#3fb950] block">Resolved Vulnerabilities</span>
+              <span id="diff-resolved-count" class="text-lg font-bold font-mono text-[#3fb950]">0</span>
             </div>
-            <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-center">
-              <span class="text-[10px] font-mono uppercase text-slate-400 block">Persistent Vulnerabilities</span>
-              <span id="diff-persistent-count" class="text-xl font-bold font-mono text-slate-300">0</span>
+            <div class="p-3 rounded-md bg-[#0d1117] border border-[#30363d] text-center">
+              <span class="text-[10px] font-mono uppercase text-[#8b949e] block">Persistent Vulnerabilities</span>
+              <span id="diff-persistent-count" class="text-lg font-bold font-mono text-[#c9d1d9]">0</span>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-              <h4 class="text-xs font-bold text-red-400 mb-3 uppercase font-mono">New Vulnerabilities Introduced</h4>
+            <div class="p-4 rounded-md bg-[#0d1117] border border-[#30363d]">
+              <h4 class="text-xs font-semibold text-[#f85149] mb-3 uppercase font-mono">New Vulnerabilities Introduced</h4>
               <div id="diff-new-findings-list" class="space-y-2"></div>
             </div>
-            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
-              <h4 class="text-xs font-bold text-emerald-400 mb-3 uppercase font-mono">Vulnerabilities Resolved</h4>
+            <div class="p-4 rounded-md bg-[#0d1117] border border-[#30363d]">
+              <h4 class="text-xs font-semibold text-[#3fb950] mb-3 uppercase font-mono">Vulnerabilities Resolved</h4>
               <div id="diff-resolved-findings-list" class="space-y-2"></div>
             </div>
           </div>
@@ -616,13 +614,13 @@
       </div>
 
       <!-- History Table -->
-      <div class="glass-panel rounded-xl border border-slate-800 overflow-hidden">
-        <div class="px-5 py-4 border-b border-slate-800">
-          <h3 class="text-sm font-bold text-white">All Scan Executions</h3>
+      <div class="surface-card rounded-lg overflow-hidden">
+        <div class="px-5 py-4 border-b border-[#30363d]">
+          <h3 class="text-sm font-semibold text-[#f0f6fc]">All Scan Executions</h3>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-slate-900/60 text-slate-400 font-mono uppercase text-[10px]">
+            <thead class="bg-[#161b22] text-[#8b949e] font-mono uppercase text-[10px] border-b border-[#30363d]">
               <tr>
                 <th class="py-3 px-4">Repository</th>
                 <th class="py-3 px-4">Scan ID</th>
@@ -632,7 +630,7 @@
                 <th class="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="history-table-body" class="divide-y divide-slate-800/60">
+            <tbody id="history-table-body" class="divide-y divide-[#21262d]">
               <!-- Dynamically populated -->
             </tbody>
           </table>
@@ -647,25 +645,25 @@
     <section id="rules-page" class="app-page hidden max-w-6xl mx-auto px-6 py-8 w-full">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 class="text-2xl font-bold text-white mb-1">Security & Quality Rules Inventory</h1>
-          <p id="rules-total-count" class="text-xs text-slate-400 font-mono">Loading rules catalog...</p>
+          <h1 class="text-2xl font-bold text-[#f0f6fc] mb-1">Security & Quality Rules Inventory</h1>
+          <p id="rules-total-count" class="text-xs text-[#8b949e] font-mono">Loading rules catalog...</p>
         </div>
         <div class="w-full sm:w-72">
           <input id="rules-search-input" type="text" placeholder="Search rules..."
-                 class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:border-emerald-500">
+                 class="w-full p-2 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#f0f6fc] placeholder-[#6e7681] font-mono focus:outline-none focus:border-[#58a6ff]">
         </div>
       </div>
 
       <!-- Category Filter Pills -->
       <div class="flex flex-wrap gap-2 mb-8">
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition-colors" onclick="filterRulesByCategory('all', this)">All</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('Authentication', this)">Authentication</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('Authorization', this)">Authorization</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('Injection', this)">Injection</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('Secrets', this)">Secrets</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('Configuration', this)">Configuration</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('AI Security', this)">AI Security</button>
-        <button class="rule-cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition-colors" onclick="filterRulesByCategory('Dependencies', this)">Dependencies</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#21262d] text-[#f0f6fc] border border-[#8b949e] transition-colors" onclick="filterRulesByCategory('all', this)">All</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('Authentication', this)">Authentication</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('Authorization', this)">Authorization</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('Injection', this)">Injection</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('Secrets', this)">Secrets</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('Configuration', this)">Configuration</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('AI Security', this)">AI Security</button>
+        <button class="rule-cat-btn px-3 py-1.5 rounded-md text-xs font-medium bg-[#161b22] text-[#8b949e] border border-[#30363d] hover:text-[#f0f6fc] transition-colors" onclick="filterRulesByCategory('Dependencies', this)">Dependencies</button>
       </div>
 
       <!-- Rules Cards Grid -->
@@ -680,29 +678,29 @@
     <!-- ========================================== -->
     <section id="settings-page" class="app-page hidden max-w-4xl mx-auto px-6 py-8 w-full">
       <div class="mb-8">
-        <h1 class="text-2xl font-bold text-white mb-1">Scanner Settings & Integrations</h1>
-        <p class="text-xs text-slate-400 font-mono">Manage developer profile, GitHub authorization, and scanning engine parameters</p>
+        <h1 class="text-2xl font-bold text-[#f0f6fc] mb-1">Scanner Settings & Integrations</h1>
+        <p class="text-xs text-[#8b949e] font-mono">Manage developer profile, GitHub authorization, and scanning engine parameters</p>
       </div>
 
       <div class="space-y-6">
         <!-- Developer Profile Card -->
-        <div class="glass-panel p-6 rounded-xl border border-slate-800">
-          <h3 class="text-sm font-bold text-white mb-4">Authentication & User Profile</h3>
+        <div class="surface-card p-6 rounded-lg">
+          <h3 class="text-xs font-semibold uppercase text-[#8b949e] mb-4">Authentication & User Profile</h3>
           <div id="settings-profile-status">
             <!-- Dynamically populated -->
           </div>
         </div>
 
         <!-- GitHub Integration -->
-        <div class="glass-panel p-6 rounded-xl border border-slate-800">
-          <h3 class="text-sm font-bold text-white mb-1">GitHub Private Repository Access</h3>
-          <p class="text-xs text-slate-400 mb-4">Provide a fine-grained GitHub Personal Access Token to scan private repositories with read-only permissions.</p>
+        <div class="surface-card p-6 rounded-lg">
+          <h3 class="text-sm font-semibold text-[#f0f6fc] mb-1">GitHub Private Repository Access</h3>
+          <p class="text-xs text-[#8b949e] mb-4">Provide a fine-grained GitHub Personal Access Token to scan private repositories with read-only permissions.</p>
           <div class="space-y-3">
             <input type="password" placeholder="ghp_************************************"
-                   class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+                   class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs font-mono text-[#f0f6fc] focus:outline-none focus:border-[#58a6ff]">
             <div class="flex items-center justify-between">
-              <span class="text-[11px] text-slate-500 font-mono">Tokens are never saved in plaintext logs or reports.</span>
-              <button onclick="showToast('GitHub token saved in secure session state', 'success')" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-200">
+              <span class="text-[11px] text-[#6e7681] font-mono">Tokens are never saved in plaintext logs or reports.</span>
+              <button onclick="showToast('GitHub token saved in secure session state', 'success')" class="btn-secondary px-3.5 py-1.5 text-xs rounded-md">
                 Save Token
               </button>
             </div>
@@ -710,16 +708,16 @@
         </div>
 
         <!-- Engine Preferences -->
-        <div class="glass-panel p-6 rounded-xl border border-slate-800">
-          <h3 class="text-sm font-bold text-white mb-4">Scanning Engine Preferences</h3>
+        <div class="surface-card p-6 rounded-lg">
+          <h3 class="text-xs font-semibold uppercase text-[#8b949e] mb-4">Scanning Engine Preferences</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
             <div>
-              <label class="block text-slate-400 mb-1">Repository Clone Timeout (sec)</label>
-              <input type="number" value="60" class="w-full p-2 rounded bg-slate-900 border border-slate-800 text-slate-200">
+              <label class="block text-[#8b949e] mb-1">Repository Clone Timeout (sec)</label>
+              <input type="number" value="60" class="w-full p-2 rounded-md bg-[#0d1117] border border-[#30363d] text-[#c9d1d9]">
             </div>
             <div>
-              <label class="block text-slate-400 mb-1">Max File Size Limit (MB)</label>
-              <input type="number" value="5" class="w-full p-2 rounded bg-slate-900 border border-slate-800 text-slate-200">
+              <label class="block text-[#8b949e] mb-1">Max File Size Limit (MB)</label>
+              <input type="number" value="5" class="w-full p-2 rounded-md bg-[#0d1117] border border-[#30363d] text-[#c9d1d9]">
             </div>
           </div>
         </div>
@@ -731,19 +729,19 @@
   <!-- ========================================== -->
   <!-- MODAL: FINDING DETAIL DRAWER -->
   <!-- ========================================== -->
-  <div id="finding-detail-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="glass-panel max-w-2xl w-full max-h-[85vh] rounded-2xl border border-slate-700 p-6 flex flex-col overflow-hidden shadow-2xl">
+  <div id="finding-detail-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="surface-card max-w-2xl w-full max-h-[85vh] rounded-lg border border-[#30363d] p-6 flex flex-col overflow-hidden shadow-2xl">
       <!-- Modal Header -->
-      <div class="flex items-start justify-between pb-4 border-b border-slate-800 mb-4">
+      <div class="flex items-start justify-between pb-4 border-b border-[#30363d] mb-4">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <span id="modal-rule-id" class="font-mono text-xs font-bold text-emerald-400 px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-800/80">-</span>
-            <span id="modal-severity-badge" class="badge-critical text-xs px-2.5 py-0.5 rounded font-semibold">CRITICAL</span>
-            <span id="modal-category" class="text-xs text-slate-400 font-mono">-</span>
+            <span id="modal-rule-id" class="font-mono text-xs font-semibold text-[#f0f6fc] px-2 py-0.5 rounded bg-[#21262d] border border-[#30363d]">-</span>
+            <span id="modal-severity-badge" class="badge-critical text-xs px-2 py-0.5 rounded font-semibold">CRITICAL</span>
+            <span id="modal-category" class="text-xs text-[#8b949e] font-mono">-</span>
           </div>
-          <h3 id="modal-title" class="text-base font-bold text-white leading-snug">-</h3>
+          <h3 id="modal-title" class="text-sm font-semibold text-[#f0f6fc] leading-snug">-</h3>
         </div>
-        <button onclick="closeFindingDetailModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+        <button onclick="closeFindingDetailModal()" class="text-[#8b949e] hover:text-[#f0f6fc] p-1 rounded-md">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -751,13 +749,13 @@
       <!-- Modal Body -->
       <div class="flex-1 overflow-y-auto space-y-4 pr-1 text-xs">
         <div>
-          <span class="font-mono uppercase text-slate-500 text-[10px] block mb-1">Description</span>
-          <p id="modal-description" class="text-slate-200 leading-relaxed">-</p>
+          <span class="font-mono uppercase text-[#8b949e] text-[10px] block mb-1">Description</span>
+          <p id="modal-description" class="text-[#c9d1d9] leading-relaxed">-</p>
         </div>
 
         <div>
-          <span class="font-mono uppercase text-red-400 text-[10px] block mb-1">Why This Matters (Security Impact)</span>
-          <p id="modal-impact" class="text-slate-300 leading-relaxed bg-red-950/20 p-3 rounded-lg border border-red-900/40">-</p>
+          <span class="font-mono uppercase text-[#f85149] text-[10px] block mb-1">Why This Matters (Security Impact)</span>
+          <p id="modal-impact" class="text-[#c9d1d9] leading-relaxed bg-[#0d1117] p-3 rounded-md border border-[#f85149]/20">-</p>
         </div>
 
         <div id="modal-evidence-container">
@@ -765,13 +763,13 @@
         </div>
 
         <div>
-          <span class="font-mono uppercase text-emerald-400 text-[10px] block mb-1">Recommended Solution</span>
-          <p id="modal-recommendation" class="text-slate-200 leading-relaxed bg-emerald-950/20 p-3 rounded-lg border border-emerald-900/40">-</p>
+          <span class="font-mono uppercase text-[#3fb950] text-[10px] block mb-1">Recommended Solution</span>
+          <p id="modal-recommendation" class="text-[#c9d1d9] leading-relaxed bg-[#0d1117] p-3 rounded-md border border-[#238636]/30">-</p>
         </div>
 
-        <div class="flex items-center gap-6 pt-2 border-t border-slate-800 text-[11px] font-mono text-slate-400">
-          <div>Confidence: <span id="modal-confidence" class="text-white font-bold">-</span></div>
-          <div>Status: <span id="modal-status" class="text-white font-bold">-</span></div>
+        <div class="flex items-center gap-6 pt-2 border-t border-[#30363d] text-[11px] font-mono text-[#8b949e]">
+          <div>Confidence: <span id="modal-confidence" class="text-[#f0f6fc] font-semibold">-</span></div>
+          <div>Status: <span id="modal-status" class="text-[#f0f6fc] font-semibold">-</span></div>
         </div>
       </div>
     </div>
@@ -780,25 +778,25 @@
   <!-- ========================================== -->
   <!-- MODAL: SIGN IN / REGISTER -->
   <!-- ========================================== -->
-  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="glass-panel max-w-sm w-full rounded-2xl border border-slate-700 p-6 shadow-2xl">
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="surface-card max-w-sm w-full rounded-lg border border-[#30363d] p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-base font-bold text-white">Developer Sign In</h3>
-        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-white">✕</button>
+        <h3 class="text-sm font-semibold text-[#f0f6fc]">Developer Sign In</h3>
+        <button onclick="closeAuthModal()" class="text-[#8b949e] hover:text-[#f0f6fc]">✕</button>
       </div>
       <div class="space-y-3 mb-4">
         <div>
-          <label class="block text-[10px] font-mono uppercase text-slate-400 mb-1">Email</label>
-          <input id="auth-email" type="email" placeholder="dev@example.com" class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-white">
+          <label class="block text-[10px] font-mono uppercase text-[#8b949e] mb-1">Email</label>
+          <input id="auth-email" type="email" placeholder="dev@example.com" class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#f0f6fc] focus:outline-none focus:border-[#58a6ff]">
         </div>
         <div>
-          <label class="block text-[10px] font-mono uppercase text-slate-400 mb-1">Password</label>
-          <input id="auth-password" type="password" placeholder="••••••••" class="w-full p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-white">
+          <label class="block text-[10px] font-mono uppercase text-[#8b949e] mb-1">Password</label>
+          <input id="auth-password" type="password" placeholder="••••••••" class="w-full p-2.5 rounded-md bg-[#0d1117] border border-[#30363d] text-xs text-[#f0f6fc] focus:outline-none focus:border-[#58a6ff]">
         </div>
       </div>
       <div class="flex gap-2">
-        <button onclick="handleAuthSubmit(false)" class="flex-1 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">Sign In</button>
-        <button onclick="handleAuthSubmit(true)" class="flex-1 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold">Register</button>
+        <button onclick="handleAuthSubmit(false)" class="btn-primary flex-1 py-2 rounded-md text-xs">Sign In</button>
+        <button onclick="handleAuthSubmit(true)" class="btn-secondary flex-1 py-2 rounded-md text-xs">Register</button>
       </div>
     </div>
   </div>

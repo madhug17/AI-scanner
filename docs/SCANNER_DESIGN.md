@@ -61,3 +61,4 @@ $$\text{Risk Score} = \min(100.0, \, \text{round}(\text{Raw Score} \times 2.0, 1
 - `20.1` – `50.0`: Medium Risk
 - `50.1` – `75.0`: High Risk
 - `75.1` – `100.0`: Critical Risk
+

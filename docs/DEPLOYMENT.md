@@ -52,3 +52,4 @@ kubectl apply -f k8s/api-deployment.yaml
 kubectl apply -f k8s/worker-deployment.yaml
 kubectl apply -f k8s/service.yaml
 ```
+

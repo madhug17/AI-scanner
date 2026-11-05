@@ -66,3 +66,4 @@ The AI App Security & Quality Scanner implements 52 static security rules coveri
 - **TF-002**: **Excessive IAM Permissions** — Flags wildcard `*` action statements in IAM policies.
 - **TF-003 / SEC-029**: **Publicly Exposed Database** — Detects databases with `publicly_accessible = true`.
 - **TF-004**: **Unencrypted Storage Configuration** — Identifies storage volumes lacking KMS / server-side encryption.
+

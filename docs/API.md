@@ -137,3 +137,4 @@ All API endpoints are documented interactively via OpenAPI / Swagger UI at `/doc
 
 ### Aggregate Dashboard Statistics
 `GET /api/v1/stats`
+

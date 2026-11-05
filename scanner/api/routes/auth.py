@@ -165,3 +165,4 @@ def get_user_profile(user: UserModel = Depends(require_current_user)):
         is_admin=user.is_admin,
         created_at=user.created_at,
     )
+

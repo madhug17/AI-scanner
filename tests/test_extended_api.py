@@ -154,3 +154,4 @@ def test_pdf_report_and_scan_comparison(ext_db):
     assert diff["baseline_scan_id"] == job_a.id
     assert diff["target_scan_id"] == job_b.id
     assert diff["risk_score_delta"] == 35.0
+

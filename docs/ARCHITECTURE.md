@@ -66,3 +66,4 @@ The **AI App Security & Quality Scanner** is an enterprise-grade static analysis
 2. **Asynchronous Distributed Processing:** Heavy repository analysis is decoupled from the web tier via Apache Kafka. API endpoints accept scans in $<5$ ms with HTTP 202, preventing thread starvation.
 3. **Resilient Multi-Tier Caching:** Redis caches active scan status and completed reports. When Redis is unavailable, the application degrades gracefully to in-memory caching and direct PostgreSQL reads with zero crashes.
 4. **Permanent Secret Masking:** Any detected secret (API key, token, private key) is redacted in memory before database persistence or presentation in reports.
+
