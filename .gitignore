@@ -38,5 +38,6 @@ htmlcov/
 # Temporary scans
 tmp_scans/
 reports/*.json
+!reports/benchmark_results.json
 *.joblib
 ml_experiments.json

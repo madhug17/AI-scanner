@@ -1,0 +1,11 @@
+Metric,Before,After,Improvement
+average_api_latency,621.87 ms,0.435 ms,99.93% reduction
+p95_api_latency,919.825 ms,0.657 ms,99.93% reduction
+p99_api_latency,937.376 ms,1.151 ms,99.88% reduction
+throughput_rps,45.27 req/s,1287.36 req/s,+2743.74% increase
+database_queries_per_repeated_read,3 queries / request,0 queries / request (cache hit),100% reduction
+redis_cache_hit_rate,N/A (no cache layer),0.0%,Measured
+api_submission_time,30.873 ms (synchronous scan block),4.17 ms (202 queued),86.49% reduction
+scan_completion_time,30.873 ms,133.923 ms,Decoupled asynchronous execution
+cpu_usage,128.5%,151.2%,Measured resource footprint
+memory_usage,85.27 MB,85.58 MB,Measured memory footprint

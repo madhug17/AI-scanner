@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from scanner.database.repositories import ScanJobRepository, FindingRepository, ScanSummaryRepository
 from scanner.core.finding import Finding, Evidence, Severity, FindingStatus
 from scanner.core.scoring import RiskSummary
+from scanner.cache.redis_client import redis_client, RedisClient
+from scanner.core.config import settings
 
 
 class PaginatedFindingsResponse(BaseModel):
@@ -90,7 +92,16 @@ class ReportService:
             items=pydantic_findings,
         )
 
-    def get_complete_report(self, scan_id: str) -> ScanReportResponse | None:
+    def get_complete_report(self, scan_id: str, bypass_cache: bool = False) -> ScanReportResponse | None:
+        cache_key = f"scan:{scan_id}:report"
+        if not bypass_cache:
+            cached_json = redis_client.get(cache_key)
+            if cached_json:
+                try:
+                    return ScanReportResponse.model_validate_json(cached_json)
+                except Exception:
+                    pass
+
         job = self.job_repo.get_job(scan_id)
         if not job:
             return None
@@ -140,7 +151,7 @@ class ReportService:
                 scan_complete=summary_model.scan_complete,
             )
 
-        return ScanReportResponse(
+        report = ScanReportResponse(
             scan_id=job.id,
             repository_url=job.repository_url,
             repository_owner=job.repository_owner,
@@ -154,4 +165,9 @@ class ReportService:
             summary=summary,
             findings=findings,
         )
+
+        if not bypass_cache and job.status in {"completed", "failed", "cancelled"}:
+            redis_client.set(cache_key, report.model_dump_json(), ttl_seconds=settings.redis_scan_cache_ttl)
+
+        return report
 

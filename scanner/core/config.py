@@ -15,10 +15,18 @@ class Settings(BaseSettings):
         "DATABASE_URL", "sqlite:///./scanner.db"
     )
 
-    # Redis
+    # Redis Configurable Parameters (Section 3 Requirement)
+    redis_enabled: bool = True
+    redis_host: str = os.getenv("REDIS_HOST", "localhost")
+    redis_port: int = int(os.getenv("REDIS_PORT", "6379"))
+    redis_db: int = int(os.getenv("REDIS_DB", "0"))
     redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
-    redis_rate_limit_per_minute: int = 60
+    redis_timeout_sec: float = 0.5
+    redis_key_prefix: str = "scanner:"
+    redis_max_connections: int = 50
     redis_scan_cache_ttl: int = 3600
+    redis_rate_limit_per_minute: int = 60
+    redis_invalidation_strategy: str = "event_driven"  # event_driven, ttl_only, write_through
 
     # Kafka
     kafka_bootstrap_servers: str = os.getenv(
@@ -47,4 +55,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-

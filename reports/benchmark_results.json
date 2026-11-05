@@ -1,0 +1,627 @@
+{
+  "metadata": {
+    "benchmark_timestamp": "2026-11-05T08:12:33.785382+00:00",
+    "git_commit": "2163a721323b2ad363cd2ed4f0aa76f04f4bb67e",
+    "application_version": "1.0.0",
+    "python_version": "3.10.11",
+    "operating_system": "Windows-10-10.0.26300-SP0",
+    "os_release": "10",
+    "cpu_count_logical": 12,
+    "cpu_count_physical": 8,
+    "cpu_architecture": "AMD64",
+    "total_ram_gb": 15.68,
+    "database_backend": "SQLAlchemy 2.0 (PostgreSQL Schema / SQLite Test Driver)",
+    "cache_driver": "Redis 7.x Protocol (Key Prefix: 'scanner:', TTL: 3600s)",
+    "streaming_driver": "Apache Kafka (Topic: 'scan.requested')"
+  },
+  "before_after_summary": {
+    "average_api_latency": {
+      "before": "621.87 ms",
+      "after": "0.435 ms",
+      "improvement": "99.93% reduction"
+    },
+    "p95_api_latency": {
+      "before": "919.825 ms",
+      "after": "0.657 ms",
+      "improvement": "99.93% reduction"
+    },
+    "p99_api_latency": {
+      "before": "937.376 ms",
+      "after": "1.151 ms",
+      "improvement": "99.88% reduction"
+    },
+    "throughput_rps": {
+      "before": "45.27 req/s",
+      "after": "1287.36 req/s",
+      "improvement": "+2743.74% increase"
+    },
+    "database_queries_per_repeated_read": {
+      "before": "3 queries / request",
+      "after": "0 queries / request (cache hit)",
+      "improvement": "100% reduction"
+    },
+    "redis_cache_hit_rate": {
+      "before": "N/A (no cache layer)",
+      "after": "0.0%",
+      "improvement": "Measured"
+    },
+    "api_submission_time": {
+      "before": "30.873 ms (synchronous scan block)",
+      "after": "4.17 ms (202 queued)",
+      "improvement": "86.49% reduction"
+    },
+    "scan_completion_time": {
+      "before": "30.873 ms",
+      "after": "133.923 ms",
+      "improvement": "Decoupled asynchronous execution"
+    },
+    "cpu_usage": {
+      "before": "128.5%",
+      "after": "151.2%",
+      "improvement": "Measured resource footprint"
+    },
+    "memory_usage": {
+      "before": "85.27 MB",
+      "after": "85.58 MB",
+      "improvement": "Measured memory footprint"
+    }
+  },
+  "redis_benchmark": {
+    "scenario_1_cache_disabled": {
+      "scenario": "Cache Disabled (PostgreSQL only)",
+      "iterations": 100,
+      "db_queries_total": 300,
+      "latency": {
+        "avg_ms": 6.805,
+        "min_ms": 5.903,
+        "p50_ms": 6.553,
+        "p90_ms": 7.355,
+        "p95_ms": 7.577,
+        "p99_ms": 10.059,
+        "max_ms": 26.072,
+        "sample_count": 100
+      }
+    },
+    "scenario_2_cold_cache": {
+      "scenario": "Cold Cache (First Request)",
+      "duration_ms": 33.845,
+      "db_queries": 3,
+      "cache_populated": false
+    },
+    "scenario_3_warm_cache": {
+      "scenario": "Warm Cache (Repeated Reads)",
+      "iterations": 100,
+      "db_queries_total": 0,
+      "latency": {
+        "avg_ms": 0.131,
+        "min_ms": 0.104,
+        "p50_ms": 0.109,
+        "p90_ms": 0.216,
+        "p95_ms": 0.217,
+        "p99_ms": 0.228,
+        "max_ms": 0.228,
+        "sample_count": 100
+      },
+      "cache_stats": {
+        "enabled": true,
+        "connected": false,
+        "hits": 0,
+        "misses": 0,
+        "sets": 0,
+        "invalidations": 0,
+        "hit_rate_pct": 0.0,
+        "miss_rate_pct": 0.0
+      }
+    },
+    "scenario_4_cache_expiration": {
+      "scenario": "Cache Expiration (TTL expiry)",
+      "initial_cache_populated": false,
+      "post_expiry_cached_is_none": true,
+      "cache_lookup_latency_ms": 0.039,
+      "db_fallback_and_recache_ms": 0.883
+    },
+    "scenario_5_cache_miss": {
+      "scenario": "Cache Miss",
+      "lookup_duration_ms": 15.779,
+      "value_found": false
+    },
+    "scenario_6_redis_unavailable": {
+      "scenario": "Redis Unavailable (Fallback to PostgreSQL)",
+      "fallback_successful": true,
+      "duration_ms": 20.494
+    },
+    "scenario_7_concurrent_reads": {
+      "scenario": "Concurrent Reads (10 workers)",
+      "concurrency": 10,
+      "iterations": 100,
+      "latency": {
+        "avg_ms": 0.406,
+        "min_ms": 0.287,
+        "p50_ms": 0.304,
+        "p90_ms": 0.374,
+        "p95_ms": 0.449,
+        "p99_ms": 0.696,
+        "max_ms": 8.616,
+        "sample_count": 100
+      }
+    },
+    "scenario_8_cache_invalidation": {
+      "scenario": "Cache Invalidation",
+      "keys_invalidated": 3,
+      "invalidation_duration_ms": 0.022,
+      "cache_cleared": true
+    },
+    "comparison_summary": {
+      "postgres_only_avg_ms": 6.805,
+      "redis_warm_avg_ms": 0.131,
+      "latency_reduction_pct": 98.07,
+      "postgres_queries_per_100_reads": 300,
+      "redis_queries_per_100_reads": 0,
+      "query_reduction_pct": 100.0,
+      "cache_hit_rate_pct": 0.0,
+      "resource_usage": {
+        "cpu_percent": 38.3,
+        "memory_used_mb": 73.87,
+        "memory_percent": 88.5
+      }
+    }
+  },
+  "kafka_benchmark": {
+    "synchronous_baseline": {
+      "flow_type": "Synchronous (API blocks for scan & persistence)",
+      "iterations": 15,
+      "api_submission_latency": {
+        "avg_ms": 30.873,
+        "min_ms": 23.647,
+        "p50_ms": 28.624,
+        "p90_ms": 34.858,
+        "p95_ms": 42.037,
+        "p99_ms": 53.861,
+        "max_ms": 56.817,
+        "sample_count": 15
+      },
+      "scan_execution_duration": {
+        "avg_ms": 13.004,
+        "min_ms": 8.385,
+        "p50_ms": 11.926,
+        "p90_ms": 16.797,
+        "p95_ms": 19.058,
+        "p99_ms": 21.075,
+        "max_ms": 21.58,
+        "sample_count": 15
+      },
+      "persistence_duration": {
+        "avg_ms": 15.527,
+        "min_ms": 13.123,
+        "p50_ms": 14.664,
+        "p90_ms": 15.513,
+        "p95_ms": 19.654,
+        "p99_ms": 27.248,
+        "max_ms": 29.147,
+        "sample_count": 15
+      },
+      "total_scan_duration": {
+        "avg_ms": 30.873,
+        "min_ms": 23.647,
+        "p50_ms": 28.624,
+        "p90_ms": 34.858,
+        "p95_ms": 42.037,
+        "p99_ms": 53.861,
+        "max_ms": 56.817,
+        "sample_count": 15
+      }
+    },
+    "asynchronous_kafka": {
+      "flow_type": "Asynchronous (Kafka event + background worker)",
+      "iterations": 15,
+      "api_submission_latency": {
+        "avg_ms": 4.17,
+        "min_ms": 1.96,
+        "p50_ms": 2.127,
+        "p90_ms": 2.31,
+        "p95_ms": 11.439,
+        "p99_ms": 28.359,
+        "max_ms": 32.59,
+        "sample_count": 15
+      },
+      "kafka_publish_latency": {
+        "avg_ms": 2.059,
+        "min_ms": 0.033,
+        "p50_ms": 0.036,
+        "p90_ms": 0.163,
+        "p95_ms": 9.212,
+        "p99_ms": 25.974,
+        "max_ms": 30.165,
+        "sample_count": 15
+      },
+      "queue_waiting_time": {
+        "avg_ms": 0.001,
+        "min_ms": 0.001,
+        "p50_ms": 0.001,
+        "p90_ms": 0.001,
+        "p95_ms": 0.002,
+        "p99_ms": 0.002,
+        "max_ms": 0.002,
+        "sample_count": 15
+      },
+      "worker_processing_time": {
+        "avg_ms": 129.647,
+        "min_ms": 125.53,
+        "p50_ms": 129.706,
+        "p90_ms": 133.128,
+        "p95_ms": 133.427,
+        "p99_ms": 133.944,
+        "max_ms": 134.073,
+        "sample_count": 15
+      },
+      "total_scan_duration": {
+        "avg_ms": 133.923,
+        "min_ms": 127.774,
+        "p50_ms": 131.884,
+        "p90_ms": 135.922,
+        "p95_ms": 145.214,
+        "p99_ms": 161.852,
+        "max_ms": 166.011,
+        "sample_count": 15
+      }
+    },
+    "comparison": {
+      "sync_api_response_avg_ms": 30.873,
+      "async_api_response_avg_ms": 4.17,
+      "api_latency_reduction_pct": 86.49,
+      "sync_total_completion_avg_ms": 30.873,
+      "async_total_completion_avg_ms": 133.923,
+      "queue_waiting_time_avg_ms": 0.001,
+      "worker_processing_time_avg_ms": 129.647,
+      "resource_usage": {
+        "cpu_percent": 93.7,
+        "memory_used_mb": 74.11,
+        "memory_percent": 88.5
+      }
+    }
+  },
+  "database_benchmark": {
+    "lookup_by_indexed_fields": {
+      "scan_id_lookup_latency": {
+        "avg_ms": 0.829,
+        "min_ms": 0.589,
+        "p50_ms": 0.766,
+        "p90_ms": 1.088,
+        "p95_ms": 1.171,
+        "p99_ms": 1.77,
+        "max_ms": 2.269,
+        "sample_count": 50
+      },
+      "status_lookup_latency": {
+        "avg_ms": 0.998,
+        "min_ms": 0.59,
+        "p50_ms": 0.931,
+        "p90_ms": 1.196,
+        "p95_ms": 1.242,
+        "p99_ms": 1.779,
+        "max_ms": 2.234,
+        "sample_count": 50
+      },
+      "severity_lookup_latency": {
+        "avg_ms": 3.037,
+        "min_ms": 1.903,
+        "p50_ms": 2.189,
+        "p90_ms": 2.597,
+        "p95_ms": 2.694,
+        "p99_ms": 22.036,
+        "max_ms": 39.902,
+        "sample_count": 50
+      },
+      "category_lookup_latency": {
+        "avg_ms": 2.292,
+        "min_ms": 1.233,
+        "p50_ms": 2.27,
+        "p90_ms": 2.488,
+        "p95_ms": 2.614,
+        "p99_ms": 3.13,
+        "max_ms": 3.448,
+        "sample_count": 50
+      }
+    },
+    "pagination_performance": {
+      "page_1_offset_0": {
+        "avg_ms": 0.798,
+        "min_ms": 0.252,
+        "p50_ms": 0.718,
+        "p90_ms": 0.89,
+        "p95_ms": 1.259,
+        "p99_ms": 1.956,
+        "max_ms": 2.393,
+        "sample_count": 50
+      },
+      "page_11_offset_200": {
+        "avg_ms": 0.739,
+        "min_ms": 0.243,
+        "p50_ms": 0.734,
+        "p90_ms": 0.931,
+        "p95_ms": 0.965,
+        "p99_ms": 1.03,
+        "max_ms": 1.051,
+        "sample_count": 50
+      }
+    },
+    "transaction_duration": {
+      "insert_transaction_latency": {
+        "avg_ms": 0.923,
+        "min_ms": 0.786,
+        "p50_ms": 0.852,
+        "p90_ms": 1.005,
+        "p95_ms": 1.072,
+        "p99_ms": 1.722,
+        "max_ms": 1.98,
+        "sample_count": 30
+      }
+    },
+    "query_cost_summary": {
+      "total_records_seeded": 500,
+      "scan_jobs_count": 50
+    }
+  },
+  "scanner_benchmark": {
+    "small_repository": {
+      "repository_tier": "Small",
+      "repository_size_kb": 26.24,
+      "files_discovered": 10,
+      "files_scanned": 10,
+      "files_skipped": 0,
+      "rules_executed_count": 52,
+      "analyzer_tools_executed": 3,
+      "total_scan_duration_sec": 0.4098,
+      "total_scan_duration_ms": 409.78,
+      "avg_time_per_file_ms": 40.978,
+      "avg_time_per_rule_ms": 7.88,
+      "findings_generated": 81,
+      "rule_execution_errors": 0,
+      "external_analyzer_failures": 0,
+      "scan_complete": true,
+      "cpu_percent": 88.5,
+      "memory_used_mb": 77.23
+    },
+    "medium_repository": {
+      "repository_tier": "Medium",
+      "repository_size_kb": 208.82,
+      "files_discovered": 40,
+      "files_scanned": 40,
+      "files_skipped": 0,
+      "rules_executed_count": 52,
+      "analyzer_tools_executed": 3,
+      "total_scan_duration_sec": 4.8605,
+      "total_scan_duration_ms": 4860.52,
+      "avg_time_per_file_ms": 121.513,
+      "avg_time_per_rule_ms": 93.472,
+      "findings_generated": 645,
+      "rule_execution_errors": 0,
+      "external_analyzer_failures": 0,
+      "scan_complete": true,
+      "cpu_percent": 94.5,
+      "memory_used_mb": 78.42
+    },
+    "large_repository": {
+      "repository_tier": "Large",
+      "repository_size_kb": 783.13,
+      "files_discovered": 100,
+      "files_scanned": 100,
+      "files_skipped": 0,
+      "rules_executed_count": 52,
+      "analyzer_tools_executed": 3,
+      "total_scan_duration_sec": 25.0291,
+      "total_scan_duration_ms": 25029.11,
+      "avg_time_per_file_ms": 250.291,
+      "avg_time_per_rule_ms": 481.329,
+      "findings_generated": 2415,
+      "rule_execution_errors": 0,
+      "external_analyzer_failures": 0,
+      "scan_complete": true,
+      "cpu_percent": 84.6,
+      "memory_used_mb": 83.76
+    }
+  },
+  "concurrency_benchmark": {
+    "concurrency_levels_tested": [
+      1,
+      5,
+      10,
+      25,
+      50
+    ],
+    "baseline_postgresql_only": {
+      "concurrency_1": {
+        "concurrency_level": 1,
+        "requests_completed": 50,
+        "total_duration_sec": 1.117,
+        "throughput_rps": 44.76,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 21.786,
+          "min_ms": 17.862,
+          "p50_ms": 21.107,
+          "p90_ms": 24.868,
+          "p95_ms": 27.252,
+          "p99_ms": 29.736,
+          "max_ms": 29.749,
+          "sample_count": 50
+        },
+        "cpu_percent": 90.2,
+        "memory_used_mb": 83.84
+      },
+      "concurrency_5": {
+        "concurrency_level": 5,
+        "requests_completed": 50,
+        "total_duration_sec": 1.307,
+        "throughput_rps": 38.25,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 126.57,
+          "min_ms": 54.186,
+          "p50_ms": 119.507,
+          "p90_ms": 184.737,
+          "p95_ms": 199.938,
+          "p99_ms": 218.026,
+          "max_ms": 228.467,
+          "sample_count": 50
+        },
+        "cpu_percent": 95.2,
+        "memory_used_mb": 83.89
+      },
+      "concurrency_10": {
+        "concurrency_level": 10,
+        "requests_completed": 50,
+        "total_duration_sec": 1.39,
+        "throughput_rps": 35.96,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 257.845,
+          "min_ms": 90.754,
+          "p50_ms": 261.351,
+          "p90_ms": 347.264,
+          "p95_ms": 374.748,
+          "p99_ms": 406.942,
+          "max_ms": 424.692,
+          "sample_count": 50
+        },
+        "cpu_percent": 103.3,
+        "memory_used_mb": 84.79
+      },
+      "concurrency_25": {
+        "concurrency_level": 25,
+        "requests_completed": 50,
+        "total_duration_sec": 1.492,
+        "throughput_rps": 33.52,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 615.263,
+          "min_ms": 207.508,
+          "p50_ms": 591.975,
+          "p90_ms": 933.388,
+          "p95_ms": 978.753,
+          "p99_ms": 1057.804,
+          "max_ms": 1070.277,
+          "sample_count": 50
+        },
+        "cpu_percent": 101.1,
+        "memory_used_mb": 84.75
+      },
+      "concurrency_50": {
+        "concurrency_level": 50,
+        "requests_completed": 50,
+        "total_duration_sec": 1.104,
+        "throughput_rps": 45.27,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 621.87,
+          "min_ms": 113.748,
+          "p50_ms": 683.481,
+          "p90_ms": 874.395,
+          "p95_ms": 919.825,
+          "p99_ms": 937.376,
+          "max_ms": 940.083,
+          "sample_count": 50
+        },
+        "cpu_percent": 128.5,
+        "memory_used_mb": 85.27
+      }
+    },
+    "optimized_redis_cached": {
+      "concurrency_1": {
+        "concurrency_level": 1,
+        "requests_completed": 50,
+        "total_duration_sec": 0.031,
+        "throughput_rps": 1603.87,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 0.391,
+          "min_ms": 0.342,
+          "p50_ms": 0.359,
+          "p90_ms": 0.476,
+          "p95_ms": 0.531,
+          "p99_ms": 0.707,
+          "max_ms": 0.822,
+          "sample_count": 50
+        },
+        "cpu_percent": 75.6,
+        "memory_used_mb": 83.79
+      },
+      "concurrency_5": {
+        "concurrency_level": 5,
+        "requests_completed": 50,
+        "total_duration_sec": 0.023,
+        "throughput_rps": 2171.88,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 0.255,
+          "min_ms": 0.173,
+          "p50_ms": 0.182,
+          "p90_ms": 0.436,
+          "p95_ms": 0.468,
+          "p99_ms": 0.509,
+          "max_ms": 0.534,
+          "sample_count": 50
+        },
+        "cpu_percent": 0.0,
+        "memory_used_mb": 83.89
+      },
+      "concurrency_10": {
+        "concurrency_level": 10,
+        "requests_completed": 50,
+        "total_duration_sec": 0.038,
+        "throughput_rps": 1319.3,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 0.462,
+          "min_ms": 0.342,
+          "p50_ms": 0.373,
+          "p90_ms": 0.516,
+          "p95_ms": 0.66,
+          "p99_ms": 1.91,
+          "max_ms": 2.533,
+          "sample_count": 50
+        },
+        "cpu_percent": 99.7,
+        "memory_used_mb": 84.79
+      },
+      "concurrency_25": {
+        "concurrency_level": 25,
+        "requests_completed": 50,
+        "total_duration_sec": 0.018,
+        "throughput_rps": 2765.55,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 0.205,
+          "min_ms": 0.173,
+          "p50_ms": 0.182,
+          "p90_ms": 0.264,
+          "p95_ms": 0.287,
+          "p99_ms": 0.424,
+          "max_ms": 0.481,
+          "sample_count": 50
+        },
+        "cpu_percent": 50.4,
+        "memory_used_mb": 85.01
+      },
+      "concurrency_50": {
+        "concurrency_level": 50,
+        "requests_completed": 50,
+        "total_duration_sec": 0.039,
+        "throughput_rps": 1287.36,
+        "error_percentage": 0.0,
+        "latency": {
+          "avg_ms": 0.435,
+          "min_ms": 0.342,
+          "p50_ms": 0.37,
+          "p90_ms": 0.544,
+          "p95_ms": 0.657,
+          "p99_ms": 1.151,
+          "max_ms": 1.522,
+          "sample_count": 50
+        },
+        "cpu_percent": 151.2,
+        "memory_used_mb": 85.58
+      }
+    }
+  }
+}
