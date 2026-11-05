@@ -79,3 +79,4 @@ class BenchmarkReportGenerator:
                 writer = csv.DictWriter(f, fieldnames=["Metric", "Before", "After", "Improvement"])
                 writer.writeheader()
                 writer.writerows(rows)
+

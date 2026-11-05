@@ -90,3 +90,4 @@ def test_report_generator():
 
         assert json_path.exists()
         assert csv_path.exists()
+

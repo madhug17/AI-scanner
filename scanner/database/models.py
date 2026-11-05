@@ -16,10 +16,57 @@ from sqlalchemy.orm import declarative_base, relationship
 Base = declarative_base()
 
 
+class UserModel(Base):
+    __tablename__ = "users"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    hashed_password = Column(String(255), nullable=False)
+    full_name = Column(String(255), nullable=True)
+    is_active = Column(Boolean, nullable=False, default=True)
+    is_admin = Column(Boolean, nullable=False, default=False)
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+    repositories = relationship("RepositoryModel", back_populates="user", cascade="all, delete-orphan")
+
+
+class RepositoryModel(Base):
+    __tablename__ = "repositories"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    url = Column(String(512), nullable=False, index=True)
+    owner = Column(String(128), nullable=False, index=True)
+    name = Column(String(128), nullable=False, index=True)
+    default_branch = Column(String(64), nullable=False, default="main")
+    is_private = Column(Boolean, nullable=False, default=False)
+    detected_languages = Column(Text, nullable=True, default="[]")  # JSON encoded list
+    detected_frameworks = Column(Text, nullable=True, default="[]")  # JSON encoded list
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    user = relationship("UserModel", back_populates="repositories")
+    scans = relationship("ScanJobModel", back_populates="repository", cascade="all, delete-orphan")
+
+
 class ScanJobModel(Base):
     __tablename__ = "scan_jobs"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    repository_id = Column(String(36), ForeignKey("repositories.id", ondelete="SET NULL"), nullable=True, index=True)
     repository_url = Column(String(512), nullable=False, index=True)
     repository_owner = Column(String(128), nullable=False, index=True)
     repository_name = Column(String(128), nullable=False, index=True)
@@ -40,6 +87,7 @@ class ScanJobModel(Base):
     scan_version = Column(String(32), nullable=False, default="1.0.0")
 
     # Relationships
+    repository = relationship("RepositoryModel", back_populates="scans")
     findings = relationship(
         "FindingModel",
         back_populates="scan_job",
@@ -52,6 +100,34 @@ class ScanJobModel(Base):
         uselist=False,
         cascade="all, delete-orphan",
     )
+    events = relationship(
+        "ScanEventModel",
+        back_populates="scan_job",
+        cascade="all, delete-orphan",
+        order_by="ScanEventModel.timestamp",
+    )
+
+
+class ScanEventModel(Base):
+    __tablename__ = "scan_events"
+
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    scan_id = Column(
+        String(36),
+        ForeignKey("scan_jobs.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    stage = Column(String(64), nullable=False, index=True)
+    status = Column(String(32), nullable=False, default="in_progress")  # in_progress, completed, failed
+    message = Column(Text, nullable=True)
+    timestamp = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+    scan_job = relationship("ScanJobModel", back_populates="events")
 
 
 class FindingModel(Base):
@@ -68,7 +144,9 @@ class FindingModel(Base):
     title = Column(String(256), nullable=False)
     category = Column(String(64), nullable=False, index=True)
     severity = Column(String(32), nullable=False, index=True)
-    status = Column(String(32), nullable=False, index=True)
+    status = Column(String(32), nullable=False, default="open", index=True)
+    confidence = Column(String(32), nullable=False, default="high", index=True)
+    detection_source = Column(String(64), nullable=False, default="built-in", index=True)
     description = Column(Text, nullable=False)
     impact = Column(Text, nullable=False)
     recommendation = Column(Text, nullable=False)
@@ -124,4 +202,3 @@ class ScanSummaryModel(Base):
 
     # Relationship
     scan_job = relationship("ScanJobModel", back_populates="summary")
-

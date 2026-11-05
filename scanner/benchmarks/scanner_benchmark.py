@@ -97,3 +97,4 @@ class ScannerBenchmark:
             "medium_repository": self.benchmark_repository("Medium", num_files=40, lines_per_file=100),
             "large_repository": self.benchmark_repository("Large", num_files=100, lines_per_file=150),
         }
+

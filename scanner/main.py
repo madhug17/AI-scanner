@@ -1,15 +1,18 @@
 import sys
 import json
 import argparse
+from pathlib import Path
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from scanner.core.config import settings
 from scanner.core.engine import SecurityEngine
 from scanner.core.registry import default_registry
 from scanner.database.session import init_db
-from scanner.api.routes import health, scans, reports
+from scanner.api.routes import health, scans, reports, auth, repositories, findings
 
 
 @asynccontextmanager
@@ -35,10 +38,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+# Include API Routers (supporting both canonical /api/v1/ and root path endpoints)
 app.include_router(health.router)
+app.include_router(auth.router, prefix="/api/v1")
+app.include_router(auth.router)
+app.include_router(repositories.router, prefix="/api/v1")
+app.include_router(repositories.router)
 app.include_router(scans.router)
+app.include_router(scans.router, prefix="", tags=["Scans (Root)"])
 app.include_router(reports.router)
+app.include_router(reports.router, prefix="", tags=["Reports (Root)"])
+app.include_router(findings.router, prefix="/api/v1")
+app.include_router(findings.router)
+
+# Mount Frontend Static Assets
+frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+if frontend_dir.exists():
+    css_dir = frontend_dir / "css"
+    js_dir = frontend_dir / "js"
+    if css_dir.exists():
+        app.mount("/css", StaticFiles(directory=str(css_dir)), name="css")
+    if js_dir.exists():
+        app.mount("/js", StaticFiles(directory=str(js_dir)), name="js")
+
+    @app.get("/", include_in_schema=False)
+    @app.get("/dashboard", include_in_schema=False)
+    def serve_frontend_index():
+        return FileResponse(str(frontend_dir / "index.html"))
 
 
 def main():

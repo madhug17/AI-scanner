@@ -156,3 +156,4 @@ class DatabaseBenchmark:
         return {
             "insert_transaction_latency": calculate_latency_stats(tx_durations),
         }
+

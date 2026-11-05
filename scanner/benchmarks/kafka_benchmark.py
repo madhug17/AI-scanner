@@ -177,3 +177,4 @@ class KafkaBenchmark:
             "worker_processing_time": calculate_latency_stats(worker_processing_latencies),
             "total_scan_duration": calculate_latency_stats(total_completion_latencies),
         }
+
